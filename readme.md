@@ -6,13 +6,13 @@ The OpenJS Node.js Application Developer certification is designed for anyone lo
 
 ## Local site
 
-To run locally, install [11ty](https://11ty.io) using:
+To run locally, get the dependencies:
 
 ```
-npm install -g @11ty/eleventy
+npm install
 ```
 
-Then run `eleventy --serve`. You can access your site on [localhost:8080](http://localhost:8080).
+Then run `npm start`. You can access your site on [localhost:8080](http://localhost:8080).
 
 ## Deployment
 
