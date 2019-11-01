@@ -17,3 +17,5 @@ Then run `npm start`. You can access your site on [localhost:8080](http://localh
 ## Deployment
 
 TODO: Use Github pages deployment for 11ty (from the generated \_site folder)
+
+[Events](/events/events.md)
