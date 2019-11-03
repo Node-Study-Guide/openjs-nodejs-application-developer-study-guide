@@ -29,8 +29,8 @@ Set out a suggested solution.
 ## Common Classes and Functions
 
 ## Further Reading
-[MPJ on Streams - YouTube](https://www.youtube.com/watch?v=UD2dZw9iHCc)
+[MPJ intro to Streams - YouTube](https://www.youtube.com/watch?v=UD2dZw9iHCc)
 
-[Net Ninja on Buffers and Streams - YouTube](https://www.youtube.com/watch?v=GlybFFMXXmQ)
+[Net Ninja intro to Buffers and Streams - YouTube](https://www.youtube.com/watch?v=GlybFFMXXmQ)
 
 
