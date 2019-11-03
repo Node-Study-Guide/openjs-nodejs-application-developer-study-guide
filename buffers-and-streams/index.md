@@ -17,17 +17,6 @@ The Node Application Developer Certification exam section for Buffers and Stream
 ## Concept & Overview
 Go into more depth on the topic, history etc if needed.
 
-## Examples
-Give examples that demonstrate the theory. Try to keep them generic but focused.
-
-## Exercise
-Set out the exercise requirements.
-
-## Suggested solution
-Set out a suggested solution.
-
-## Common Classes and Functions
-
 ## Further Reading
 [MPJ intro to Streams - YouTube](https://www.youtube.com/watch?v=UD2dZw9iHCc)
 
