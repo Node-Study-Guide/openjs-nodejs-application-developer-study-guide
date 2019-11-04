@@ -4,6 +4,8 @@ The OpenJS Node.js Application Developer certification is designed for anyone lo
 
 [OpenJS - details of certification](https://openjsf.org/certification/)
 
+[Linux Foundation - details of certification](https://training.linuxfoundation.org/certification/jsnad/)
+
 ## Local site
 
 To run locally, get the dependencies:
