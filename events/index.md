@@ -62,3 +62,10 @@ require('events)
 
 Main concept = listeners listen for events, that are emitted from emitters.
 
+## Exercise
+
+Image we are building a SaaS that does a number of things when a user creates an account.   functionality that sends emails "confirmation" to a user when they create an account.
+
+There is a mock emailer class in the folder that has a method `send`, which expects an email address and a message body as the parameters.
+
+Use this to send a welcome email when a `userCreated` event is fired.
