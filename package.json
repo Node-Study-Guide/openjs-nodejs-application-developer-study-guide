@@ -4,8 +4,7 @@
   "description": "OpenJS Node application developer study guide",
   "scripts": {
     "start": "npx eleventy --serve",
-    "preDeploy": "npx eleventy",
-    "deploy": "npm run preDeploy; timestamp=$(date \"+%s\") && gh-pages -d _site -m \"Deployed at $timestamp\""
+    "build": "npx eleventy"
   },
   "repository": {
     "type": "git",
