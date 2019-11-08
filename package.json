@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npx eleventy --serve",
     "preDeploy": "npx eleventy --pathprefix=openjs-nodejs-application-developer-study-guide",
-    "deploy": "npm run preDeploy && gh-pages -d _site"
+    "deploy": "npm run preDeploy; timestamp=$(date \"+%s\") && gh-pages -d _site -m \"Deployed at $timestamp\""
   },
   "repository": {
     "type": "git",
