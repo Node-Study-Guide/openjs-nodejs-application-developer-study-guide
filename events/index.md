@@ -55,7 +55,7 @@ eventEmitter.emit('foo', 'bar')
 
 Listeners _listen_ for events, that are _emitted_ from emitters.
 
-Take me to [cheat sheet](../cheatsheet/#events)
+Take me to [cheat sheet]({{ "/cheatsheet/#events" | url }})
 
 ## Exercise
 
