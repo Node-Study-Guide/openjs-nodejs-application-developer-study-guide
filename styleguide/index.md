@@ -1,5 +1,5 @@
 ---
-layout: default.njk
+layout: default
 title: Style guide
 description: Kitchen sink of elements for design purposes
 ---

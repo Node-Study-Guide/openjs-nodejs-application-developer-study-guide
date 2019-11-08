@@ -1,5 +1,5 @@
 ---
-layout: post.njk
+layout: post
 title: Events
 url: events
 author: ian
