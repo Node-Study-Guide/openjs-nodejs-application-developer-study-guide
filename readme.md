@@ -19,3 +19,7 @@ Then run `npm start`. You can access your site on [localhost:8080](http://localh
 TODO: Use Github pages deployment for 11ty (from the generated \_site folder)
 
 [Events](/events/events.md)
+
+## Styling
+
+The base theme for this site is provided by [Milligram](https://milligram.io) with custom theming.

@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "OpenJS Node application developer study guide",
   "scripts": {
-    "start": "eleventy --serve",
-    "deploy": "gh-pages -d _site"
+    "start": "eleventy --serve --input=. --output=_site",
+    "build": "eleventy --config=.eleventy-deploy.js",
+    "deploy": "npm run build && gh-pages -d _site/_eleventy_redirect"
   },
   "repository": {
     "type": "git",

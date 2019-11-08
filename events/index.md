@@ -1,9 +1,8 @@
 ---
 layout: default.njk
 title: Events
+url: events
 ---
-
-# Events
 
 The Node.js core API is built around the idea of events being "emitted" and "listened" to. Objects called "emitters" emit _named_ events, that are picked up by "listener" functions.
 
@@ -15,23 +14,23 @@ When the EventEmitter object emits an event, all of the functions attached to th
 
 This example creates an event listener for `foo` events, and an event emitter to fire these events.
 
-```
-const { EventEmitter } = require('events');
+```javascript
+const { EventEmitter } = require("events");
 
 // create a listener function. These can be arrow functions, but will
 // loose `this` refering to the EventEmitter object
 const foo = function foo() {
-  console.log('foo executed.', this)
-}
+  console.log("foo executed.", this);
+};
 
 // create an emitter and bind some events to it
-const eventEmitter = new EventEmitter()
+const eventEmitter = new EventEmitter();
 
 // Bind the connection event with the listner1 function
-eventEmitter.on('foo', foo)
+eventEmitter.on("foo", foo);
 
 // fire the event
-eventEmitter.emit('foo')
+eventEmitter.emit("foo");
 ```
 
 ## Passing parameters

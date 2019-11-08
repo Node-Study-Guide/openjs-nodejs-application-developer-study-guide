@@ -1,6 +1,9 @@
-# Node Cheat Sheet
+---
+layout: default.njk
+title: Node Cheat Sheet
+---
 
-# <a name="Events"></a>Events
+## [Events](#events)
 
 Class: events.EventEmitter
 
