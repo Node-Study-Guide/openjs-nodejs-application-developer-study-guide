@@ -8,4 +8,4 @@ TODO:
 - Set out the purpose here and list the sections with links
 - Styling and update the default template
 
-[Events](/events)
+[Events]({{ "/events" | url }})
