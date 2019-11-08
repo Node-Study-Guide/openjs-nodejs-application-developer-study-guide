@@ -3,7 +3,7 @@ layout: default.njk
 title: OpenJS NodeJS Application Developer Study Guide
 ---
 
-# {{ title }}
+# {{title}}
 
 TODO:
 
