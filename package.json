@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "OpenJS Node application developer study guide",
   "scripts": {
-    "start": "npx eleventy --serve",
-    "preDeploy": "npx eleventy",
-    "deploy": "npm run preDeploy; timestamp=$(date \"+%s\") && gh-pages -d _site -m \"Deployed at $timestamp\""
+    "start": "npx eleventy --serve"
   },
   "repository": {
     "type": "git",
@@ -19,8 +17,5 @@
   "homepage": "https://github.com/jjmax75/openjs-nodejs-application-developer-study-guide#readme",
   "dependencies": {
     "@11ty/eleventy": "^0.9.0"
-  },
-  "devDependencies": {
-    "gh-pages": "^2.1.1"
   }
 }
