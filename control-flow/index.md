@@ -27,9 +27,9 @@ Thankfully Node offers 3 approaches we can use to control the order in which our
 
 Earlier in Node's development, it was common to use the _callback pattern_ to control the order that code is executed. The pattern involves passing a function as a parameter (_callback_) into your functions, and then calling that _callback_ when you're ready to continue.
 
-### Example
+Let's say we have to get some data from an external service. We don't know how long this service might take to respond. We would need to wait until the service responds, we can't simply continue running code as we might need the response.
 
-Let's say we have to get some data from an external service. To simulate this I've created a `randomDelayedResponse` function that will return a response after an unspecified amount of time.
+To simulate this I've created a `randomDelayedResponse` function that will return a response after an unspecified amount of time.
 
 ```
 function randomDelayedResponse(text) {
@@ -45,7 +45,9 @@ const output = randomDelayedResponse('Hello');
 console.log(output); // empty
 ```
 
-If we wanted to get the response we need to wait until the response it ready. One way is to pass out final `console.log` in as a function like so:
+Notice that the final line above returns `undefined`.
+
+We need to wait until the response is ready. One way is to pass our `console.log` in to `randomDelayedResponse` as a function.
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -60,11 +62,11 @@ const output = randomDelayedResponse('Hello', text => console.log(text)); // out
 console.log(output); // still empty
 ```
 
-Here we are passing the function `text => console.log(text)` as the second parameter, and this function is then called after the `setTimeout`.
+We pass the function `text => console.log(text)` as the second parameter, and this function is then called after the `setTimeout`.
 
-This might be reasonable at this level, but it's easy for callbacks to get out of control. For example, if we have two different calls to this slow function that need to be run in order, we need to nest further.
+This might be reasonable in simple situations but it's easy for callbacks to get out of control. For example, if we have many different calls to this slow function that need to be run in order. To achieve this control we need to nest further.
 
-If we ran them beside each other, they would not be reliable:
+To show many responses, consider the following code. If we ran them beside each other, the output would not be reliable.
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -75,14 +77,14 @@ function randomDelayedResponse(text, callback) {
   }, timeOut * 10);
 }
 
-randomDelayedResponse('Runner 1', text => console.log(text)); // outputs "Runner 1"
-randomDelayedResponse('Runner 2', text => console.log(text)); // outputs "Runner 2"
-randomDelayedResponse('Runner 3', text => console.log(text)); // outputs "Runner 3"
-randomDelayedResponse('Runner 4', text => console.log(text)); // outputs "Runner 4"
+randomDelayedResponse(1, text => console.log(text)); // outputs 1
+randomDelayedResponse(2, text => console.log(text)); // outputs 2
+randomDelayedResponse(3, text => console.log(text)); // outputs 3
+randomDelayedResponse(4, text => console.log(text)); // outputs 4
 // Who will win?
 ```
 
-You can run the above code multiple times, and the result is unpredictable. To create a predictable flow using callbacks we'd need to nest them more:
+We can run the above code multiple times, and the result is unpredictable. It is _asynchronous_, in that the results do not arrive in order. To create a predictable, _synchronous_ flow using callbacks we'd need to nest them.
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -107,7 +109,7 @@ randomDelayedResponse(1, text => {
 }); // outputs "1 2 3 4"
 ```
 
-As we can see, structuring these callbacks does work but can quickly become difficult to read. This example is very simple so we can see how more complex code nested in this way would become difficult to follow. Let's look at another way.
+Structuring these callbacks works. However this approach can create code becomes difficult to understand and maintain. Let's look at another way.
 
 ## Promises
 
@@ -170,7 +172,7 @@ Promises remove a lot of nesting and give us easier to read code. However there 
 
 ## Async / Await
 
-The third approach is built on top of the existing _promises_ approach but makes it easier to reason with. With `async` and `await` we can write code that feels a lot more like the simple top-down code, by telling it to wait when we need it to. Let's rewrite our _who would win?_ example from above.
+The third approach is built on top of the existing _promises_ approach but makes it easier to reason with. With `async` and `await` we can write code that feels a lot more like the simple top-down code, by telling it to wait when we need it to. Let's rewrite our _who will win?_ example from above.
 
 ```
 function randomDelayedResponse(text, callback) {
