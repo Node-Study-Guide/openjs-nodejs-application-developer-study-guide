@@ -10,7 +10,7 @@ title: OpenJS NodeJS Application Developer Study Guide
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="{{ "/css/main.css" | url }}">
     <link rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
@@ -40,7 +40,7 @@ title: OpenJS NodeJS Application Developer Study Guide
               <li><a href="#">Diagnostics</li>
               <li><a href="#">Error Handling</a></li>
               <li><a href="#">Node.js CLI</a></li>
-              <li><a href="/events" {% if page.url === '/events/' %} class="current" {% endif %}>Events</li>
+              <li><a href="{{ "/events" | url }}" {% if page.url === '/events/' %} class="current" {% endif %}>Events</li>
               <li><a href="#">File System</a></li>
               <li><a href="#">JavaScript Prerequisites</a></li>
               <li><a href="#">Module system</a></li>
@@ -61,7 +61,7 @@ title: OpenJS NodeJS Application Developer Study Guide
       <div class="row">
         <div class="column column-75 column-offset-25">
           <p>&copy; NearForm Ltd.<p>
-          <p><a href="https://github.com/jjmax75/openjs-nodejs-application-developer-study-guide/tree/master/{{ page.inputPath }}">Edit this page on GitHub</a></p>
+          <p><a href="https://github.com/Node-Study-Guide/openjs-nodejs-application-developer-study-guide/tree/master/{{ page.inputPath }}">Edit this page on GitHub</a></p>
         </div>
       </div>
       
