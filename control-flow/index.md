@@ -17,11 +17,11 @@ setTimeout(() => {
 console.log('Wash face and hands');
 ```
 
-In the above code, our compiler goes through one line at a time executing each instruction. It doesn't pause to wait, so it'll simply run the `setTimeout` then carry on and run the subequent `console.log`. Then (a small moment later), it will log the `Use lavatory` output.
+In the above code our compiler goes through each line executing each instruction. First it logs `Clean teeth`. Then it doesn't hang around for the `setTimeout`, it simply carries on and logs `Wash face and hands`. Then (a small moment later), it will log `Use lavatory`.
 
-This isn't what we want. We'll have to go wash our hands again. In production code, even worse things can happen. To get around this we can use _control flow_.
+This is not what we want. We'll have to go wash our hands again. In production code, even worse things can happen.
 
-Node offers 3 approaches we can use to control the order in which our code executes. _Callbacks_, _promises_ and _async/await_. Let's take a look at each.
+Thankfully Node offers 3 approaches we can use to control the order in which our code executes. _Callbacks_, _promises_ and _async/await_. Let's take a look at each.
 
 ## Callbacks
 
