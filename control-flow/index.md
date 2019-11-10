@@ -5,7 +5,7 @@ author: donovan
 date: Last Modified
 ---
 
-As we create programs we write sequences of events. Usually, we expect them execute in order but this is not always the way it occurs. Even though JavaScript ios [single-threaded](https://medium.com/better-programming/is-node-js-really-single-threaded-7ea59bcc8d64 'Is Node.js Really Single-Threaded?'), functions that call APIs, setTimeouts and other structures can result in our code running in an unexpected order.
+JavaScript programs are made up of series of instructions. When our programs run, they run in sequence from the top down, one line at a time. Most lines of are _synchronous_, meaning they run in order. However not all do. Sometimes _asynchronous_ code can cause our code to execute in an unexpected order.
 
 Consider the following code.
 
@@ -21,6 +21,8 @@ In the above code our compiler goes through each line executing each instruction
 
 This is not what we want. We'll have to go wash our hands again. In production code, even worse things can happen.
 
+Node generally runs in one single thread and any _blocking_ code will be run in sequence, with _non-blocking_ code having the potential to run _asynchronously_.
+
 Thankfully Node offers 3 approaches we can use to control the order in which our code executes. _Callbacks_, _promises_ and _async/await_. Let's take a look at each.
 
 ## Callbacks
@@ -34,28 +36,28 @@ To simulate this I've created a `randomDelayedResponse` function that will retur
 ```
 function randomDelayedResponse(text) {
   // Using a timeout here for the sake of simulating an external request
-  const timeOut = Math.floor(Math.random() * 10) + 1;
+  const timeOut = Math.floor(Math.random() * 100) + 1;
   const output = text;
   setTimeout(() => {
     return output;
-  }, timeOut * 10);
+  }, timeOut);
 }
 
 const output = randomDelayedResponse('Hello');
-console.log(output); // empty
+console.log(output); // undefined
 ```
 
-Notice that the final line above returns `undefined`.
+Notice that the final line above returns `undefined`. This is because the `randomDelayedResponse` line is _non_blocking_ and hasn't returned anything to `output` before we then try to apply `console.log` to it.
 
 We need to wait until the response is ready. One way is to pass our `console.log` in to `randomDelayedResponse` as a function.
 
 ```
 function randomDelayedResponse(text, callback) {
   // Using a timeout here for the sake of simulating an external request
-  const timeOut = Math.floor(Math.random() * 10) + 1;
+  const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
     callback(text);
-  }, timeOut * 10);
+  }, timeOut);
 }
 
 const output = randomDelayedResponse('Hello', text => console.log(text)); // outputs "Hello"
@@ -69,30 +71,26 @@ This might be reasonable in simple situations but it's easy for callbacks to get
 To show many responses, consider the following code. If we ran them beside each other, the output would not be reliable.
 
 ```
-function randomDelayedResponse(text, callback) {
-  // Using a timeout here for the sake of simulating an external request
-  const timeOut = Math.floor(Math.random() * 10) + 1;
-  setTimeout(() => {
-    callback(text);
-  }, timeOut * 10);
-}
+// ... replacing the last two lines of the previous example
 
-randomDelayedResponse(1, text => console.log(text)); // outputs 1
-randomDelayedResponse(2, text => console.log(text)); // outputs 2
-randomDelayedResponse(3, text => console.log(text)); // outputs 3
-randomDelayedResponse(4, text => console.log(text)); // outputs 4
+randomDelayedResponse(1, console.log); // outputs 1
+randomDelayedResponse(2, console.log); // outputs 2
+randomDelayedResponse(3, console.log); // outputs 3
+randomDelayedResponse(4, console.log); // outputs 4
 // Who will win?
 ```
 
-We can run the above code multiple times, and the result is unpredictable. It is _asynchronous_, in that the results do not arrive in order. To create a predictable, _synchronous_ flow using callbacks we'd need to nest them.
+Here we pass in the function `console.log` as the second argument which is then run as `callback(text)` to log the output.
+
+While the code does run in order and run the `randomDelayedResponse` function with the right sequence of inputs, the random delays mean they won't be logged in order. We can run the above code multiple times and the result is never predictable. Each call to the function is _asynchronous_, in that the results do not arrive in order. To create a predictable, _synchronous_ flow using callbacks we'd need to nest them.
 
 ```
 function randomDelayedResponse(text, callback) {
   // Using a timeout here for the sake of simulating an external request
-  const timeOut = Math.floor(Math.random() * 10) + 1;
+  const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
     callback(text);
-  }, timeOut * 10);
+  }, timeOut);
 }
 
 randomDelayedResponse(1, text => {
@@ -109,7 +107,9 @@ randomDelayedResponse(1, text => {
 }); // outputs "1 2 3 4"
 ```
 
-Structuring these callbacks works. However this approach can create code becomes difficult to understand and maintain. Let's look at another way.
+Structuring these callbacks outputs the numbers in the correct order. However when we use `callbacks` the code can become difficult to understand and maintain. This might be suitable in simple cases. Though if we find ourselves nesting multiple levels deep we should look for other ways to control the flow.
+
+Let's look at one such alternative.
 
 ## Promises
 
@@ -133,10 +133,13 @@ We can rewrite our runner example using promises like so:
 ```
 function randomDelayedResponse(text, callback) {
   return new Promise((resolve, reject) => {
-    const timeOut = Math.floor(Math.random() * 10) + 1;
+    const timeOut = Math.floor(Math.random() * 100) + 1;
     setTimeout(() => {
-      resolve(text); // Replacing the callback with "resolve"
-    }, timeOut * 10);
+      if (text) {
+        resolve(text); // Replacing the callback with "resolve"
+      }
+      reject('No text provided!'); // Reject when there is an error
+    }, timeOut);
   });
 }
 
@@ -157,32 +160,23 @@ randomDelayedResponse(1)
     console.log(res);
   })
   .catch(error => {
-    // handle error
+    console.log(error);
   })
 // outputs "1 2 3 4"
 ```
 
 Running the above code should output the correct order, albeit with random delays between each number.
 
-We aren't handling errors in this example, but if our function was to encounter an error we would `reject('some error')` and this would then be picked up by the `catch`.
+In the above example we shouldn't see any errors - but if you want to adjust one of the `andomDelayedResponse()` calls to pass in no data, it should `reject` and the `catch` block will log the error.
 
-You can learn more about `promises` here (LINK)
-
-Promises remove a lot of nesting and give us easier to read code. However there is a third way to control the execution order of our code.
+Promises remove the nesting and give us easier to read code. Let's look at a third way that builds on this.
 
 ## Async / Await
 
-The third approach is built on top of the existing _promises_ approach but makes it easier to reason with. With `async` and `await` we can write code that feels a lot more like the simple top-down code, by telling it to wait when we need it to. Let's rewrite our _who will win?_ example from above.
+The third approach is built on top of the existing _promises_ approach and results in even simpler code. With `async` and `await` we can write code that feels a lot more like our usual top-down code. It works by telling our commands to wait when we need them to. Let's rewrite our _who will win?_ example from above.
 
 ```
-function randomDelayedResponse(text, callback) {
-  return new Promise((resolve, reject) => {
-    const timeOut = Math.floor(Math.random() * 10) + 1;
-    setTimeout(() => {
-      resolve(text);
-    }, timeOut * 10);
-  });
-}
+// Replace the second part of the example above
 
 async function runTheRace() { // put `async` before the function call
 
@@ -200,9 +194,13 @@ async function runTheRace() { // put `async` before the function call
 runTheRace();
 ```
 
-In the above we have replaced the series of `.then()` calls with an `async` function. It's still making use of a _promise_ but when we want to wait for the promise we simply place `await` before the asynchronous function. This way, the code execution order is preserved.
+In the above we have replaced the series of `.then()` calls with an `async` function. It's still making use of a _promise_ but when we want to wait for the promise we simply place `await` before the asynchronous function. The code execution order is preserved.
 
 You may be wondering how we handle errors here. One approach is to use the `try/catch` method. We'll be covering that and more in the [error handling section]({{ "/error-handling/" | url }}).
+
+## Which is preferred?
+
+Generally you should try to aim for the `async/await` approach when possible. It helps promote clean code. None of the approaches are to be avoided entirely, but in general always aim for the approach that ensures the code is easy to read and understand.
 
 ## Exercise
 
@@ -210,17 +208,17 @@ Given the following code, how would you change it so that the results always out
 
 ```
 function hello() {
-  const timeOut = Math.floor(Math.random() * 10) + 1;
+  const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
     console.log('hello');
-  }, timeOut * 10);
+  }, timeOut);
 }
 
 function world() {
-  const timeOut = Math.floor(Math.random() * 10) + 1;
+  const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
     console.log('world');
-  }, timeOut * 10);
+  }, timeOut);
 }
 ```
 
@@ -233,11 +231,11 @@ function world() {
 ```
 # Callbacks
 function hello(callback) {
-  const timeOut = Math.floor(Math.random() * 10) + 1;
+  const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
     console.log('hello');
     callback();
-  }, timeOut * 10);
+  }, timeOut);
 }
 
 function world() {
@@ -255,19 +253,19 @@ hello(world);
 
 function hello() {
   return new Promise((resolve, reject) => {
-    const timeOut = Math.floor(Math.random() * 10) + 1;
+    const timeOut = Math.floor(Math.random() * 100) + 1;
     setTimeout(() => {
       resolve('hello');
-    }, timeOut * 10);
+    }, timeOut);
   });
 }
 
 function world() {
   return new Promise((resolve, reject) => {
-    const timeOut = Math.floor(Math.random() * 10) + 1;
+    const timeOut = Math.floor(Math.random() * 100) + 1;
     setTimeout(() => {
       resolve('world');
-    }, timeOut * 10);
+    }, timeOut);
   });
 }
 
@@ -287,19 +285,19 @@ hello()
 
 function hello() {
   return new Promise((resolve, reject) => {
-    const timeOut = Math.floor(Math.random() * 10) + 1;
+    const timeOut = Math.floor(Math.random() * 100) + 1;
     setTimeout(() => {
       resolve('hello');
-    }, timeOut * 10);
+    }, timeOut);
   });
 }
 
 function world() {
   return new Promise((resolve, reject) => {
-    const timeOut = Math.floor(Math.random() * 10) + 1;
+    const timeOut = Math.floor(Math.random() * 100) + 1;
     setTimeout(() => {
       resolve('world');
-    }, timeOut * 10);
+    }, timeOut);
   });
 }
 
