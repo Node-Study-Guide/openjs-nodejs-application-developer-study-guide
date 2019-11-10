@@ -8,14 +8,14 @@ The Node Application Developer Certification exam section for Buffers and Stream
 
 The topics that are covered include:
 
- - Node.js Buffer API’s
- - Incremental Processing
- - Transforming Data
- - Connecting Streams
+- Node.js Buffer API’s
+- Incremental Processing
+- Transforming Data
+- Connecting Streams
 
 ## Buffers and Streams Overview
- 
-[Buffer](https://nodejs.org/docs/latest-v10.x/api/buffer.html) and [Stream](https://nodejs.org/docs/latest-v10.x/api/stream.html) are fundamentally seperate topics yet are intrinsically linked. This section will cover how these APIs work individually and with each other.
+
+The NodeJS APIS [Buffer](https://nodejs.org/docs/latest-v10.x/api/buffer.html) and [Stream](https://nodejs.org/docs/latest-v10.x/api/stream.html) are fundamentally seperate topics yet are intrinsically linked. This section will cover how these APIs work individually and with each other.
 
 ### Buffer
 
@@ -29,7 +29,18 @@ A Stream is a....
 
 [Streams in depth](./streams.md)
 
+## Working with Buffers and Streams
+
+### Examples
+
+### Details
+
+## Summary
+
+## Exercise
+
 ## Further Reading
+
 MPJ intro to Streams - YouTube
 
 Net Ninja intro to Buffers and Streams - YouTube
