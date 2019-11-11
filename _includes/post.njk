@@ -1,0 +1,10 @@
+---
+layout: default.njk
+templateClass: tmpl-post
+---
+
+{{ content | safe }}
+
+<h3>Ready to mark {{title}} as completed?</h3>
+
+<button onClick="toggleCompletedTopic('{{page.url}}')" data-topic="{{page.url}}" class="completed-button">Mark as completed</button>
