@@ -120,7 +120,7 @@ Let's look at one such alternative.
 To avoid this callback hell, we can use a different structure called _promises_. A promise is a function that returns a _resolved_ response which we can chain using `then`, or a _rejected_ response which we can `catch`. It follows this pattern:
 
 ```
-runOurPromise() // returns a response
+ourPromiseFunction() // returns a promise that will resolve or reject
   .then(response => {
     return foo; // this could optionally be another promise
   })
