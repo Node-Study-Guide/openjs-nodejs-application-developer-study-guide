@@ -21,13 +21,13 @@ In the above code our compiler goes through each line executing each instruction
 
 This is not what we want. We'll have to go wash our hands again. In production code, even worse things can happen.
 
-Node generally runs in one single thread and any _blocking_ code will be run in sequence, with _non-blocking_ code having the potential to run _asynchronously_.
+Node.js generally runs in one single thread and any _blocking_ code will be run in sequence, with _non-blocking_ code having the potential to run _asynchronously_. For more info you may want to take a look at [this talk on how the Event Loop works](https://www.youtube.com/watch?v=8aGhZQkoFbQ).
 
-Thankfully Node offers 3 asynchronous approaches we can use to control the order in which our code executes. _Callbacks_, _promises_ and _async/await_. Let's take a look at each.
+Thankfully Node.js offers 3 asynchronous approaches we can use to control the order in which our code executes. _Callbacks_, _promises_ and _async/await_. Let's take a look at each.
 
 ## Callbacks
 
-Earlier in Node's development, it was common to use the _callback pattern_ to control the order that code is executed. The pattern involves passing a function as a parameter (_callback_) into your functions, and then calling that _callback_ when you're ready to continue.
+Earlier in the development of Node.js it was common to use the _callback pattern_ to control the order that code is executed. The pattern involves passing a function as a parameter (_callback_) into your functions, and then calling that _callback_ when you're ready to continue.
 
 Let's say we have to get some data from an external service. We don't know how long this service might take to respond. We would need to wait until the service responds, we can't simply continue running code as we might need the response.
 
