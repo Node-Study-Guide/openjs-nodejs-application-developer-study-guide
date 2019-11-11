@@ -15,6 +15,7 @@ title: OpenJS NodeJS Application Developer Study Guide
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+    <script src="{{ "/js/main.js" | url }}"></script>
   </head>
   <body>
     <header class="container">
@@ -33,26 +34,17 @@ title: OpenJS NodeJS Application Developer Study Guide
       <div class="row">
         <div class="sidebar column">
           <nav>
-            <ul>
-              <li><a href="#" {% if page.url === '/buffer/' %} class="current" {% endif %}>Buffer and Streams</a></li>
-              <li><a href="#">Control flow</a></li>
-              <li><a href="#">Child Processes</a></li>
-              <li><a href="#">Diagnostics</li>
-              <li><a href="#">Error Handling</a></li>
-              <li><a href="#">Node.js CLI</a></li>
-              <li><a href="{{ "/events" | url }}" {% if page.url === '/events/' %} class="current" {% endif %}>Events</li>
-              <li><a href="#">File System</a></li>
-              <li><a href="#">JavaScript Prerequisites</a></li>
-              <li><a href="#">Module system</a></li>
-              <li><a href="#">Process/Operating System</a></li>
-              <li><a href="#">Package.json</a></li>
-              <li><a href="#">Unit Testing</a></li>
+            <ul class="topics">
+              {% for topic in topics %}
+                <li data-topic="{{topic.url}}">
+                  <a href="{{ topic.url | url }}" {% if page.url === topic.url %} class="current" {% endif %}>{{topic.title}}</a>
+                </li>
+              {% endfor %}
             </ul>
           </nav>
         </div>
         <div class="main-content column column-75">
           <h1>{{ title }}</h1>
-
           {{ content | safe }}
         </div>
       </div>
