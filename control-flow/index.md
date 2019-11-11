@@ -71,12 +71,10 @@ This might be reasonable in simple situations but it's easy for callbacks to get
 To show many responses, consider the following code. If we ran them beside each other, the output would not be reliable.
 
 ```
-function randomDelayedResponse(text) {
-  // Using a timeout here for the sake of simulating an external request
+function randomDelayedResponse(text, callback) {
   const timeOut = Math.floor(Math.random() * 100) + 1;
-  const output = text;
   setTimeout(() => {
-    return output;
+    callback(text);
   }, timeOut);
 }
 
@@ -93,7 +91,6 @@ While the code does run in order and run the `randomDelayedResponse` function wi
 
 ```
 function randomDelayedResponse(text, callback) {
-  // Using a timeout here for the sake of simulating an external request
   const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
     callback(text);
