@@ -382,8 +382,9 @@ async function callFoo() {
 
 Be sure to check out the [cheat sheet]({{ "/cheatsheet/" | url }}) for more.
 
-## Further Reading
+## Further learning
 
 - [Callback function](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)
 - [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 - [Making asynchronous programming easier with async and await](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await)
+- What the heck is the event loop anyway? (Philip Roberts, JSConf EU, 2014) (https://www.youtube.com/watch?v=8aGhZQkoFbQ)
