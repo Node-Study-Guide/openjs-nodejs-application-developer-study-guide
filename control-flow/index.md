@@ -23,7 +23,7 @@ This is not what we want. We'll have to go wash our hands again. In production c
 
 Node generally runs in one single thread and any _blocking_ code will be run in sequence, with _non-blocking_ code having the potential to run _asynchronously_.
 
-Thankfully Node offers 3 approaches we can use to control the order in which our code executes. _Callbacks_, _promises_ and _async/await_. Let's take a look at each.
+Thankfully Node offers 3 asynchronous approaches we can use to control the order in which our code executes. _Callbacks_, _promises_ and _async/await_. Let's take a look at each.
 
 ## Callbacks
 
@@ -71,7 +71,14 @@ This might be reasonable in simple situations but it's easy for callbacks to get
 To show many responses, consider the following code. If we ran them beside each other, the output would not be reliable.
 
 ```
-// ... replacing the last two lines of the previous example
+function randomDelayedResponse(text) {
+  // Using a timeout here for the sake of simulating an external request
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  const output = text;
+  setTimeout(() => {
+    return output;
+  }, timeOut);
+}
 
 randomDelayedResponse(1, console.log); // outputs 1
 randomDelayedResponse(2, console.log); // outputs 2
@@ -116,7 +123,7 @@ Let's look at one such alternative.
 To avoid this callback hell, we can use a different structure called _promises_. A promise is a function that returns a _resolved_ response which we can chain using `then`, or a _rejected_ response which we can `catch`. It follows this pattern:
 
 ```
-runOutPromise() // returns a response
+runOurPromise() // returns a response
   .then(response => {
     return foo; // this could optionally be another promise
   })
@@ -135,10 +142,10 @@ function randomDelayedResponse(text, callback) {
   return new Promise((resolve, reject) => {
     const timeOut = Math.floor(Math.random() * 100) + 1;
     setTimeout(() => {
-      if (text) {
-        resolve(text); // Replacing the callback with "resolve"
+      if (!text) {
+          reject('No text provided!'); // Reject when there is no text provided
       }
-      reject('No text provided!'); // Reject when there is an error
+      resolve(text); // Replacing the callback with "resolve"
     }, timeOut);
   });
 }
@@ -176,7 +183,17 @@ Promises remove the nesting and give us easier to read code. Let's look at a thi
 The third approach is built on top of the existing _promises_ approach and results in even simpler code. With `async` and `await` we can write code that feels a lot more like our usual top-down code. It works by telling our commands to wait when we need them to. Let's rewrite our _who will win?_ example from above.
 
 ```
-// Replace the second part of the example above
+function randomDelayedResponse(text, callback) {
+  return new Promise((resolve, reject) => {
+    const timeOut = Math.floor(Math.random() * 100) + 1;
+    setTimeout(() => {
+      if (!text) {
+          reject('No text provided!');
+      }
+      resolve(text);
+    }, timeOut);
+  });
+}
 
 async function runTheRace() { // put `async` before the function call
 
@@ -188,7 +205,14 @@ async function runTheRace() { // put `async` before the function call
   console.log(3);
 
   const result4 = await randomDelayedResponse(4);
-  console.log(result4)
+  console.log(result4);
+
+  // Catching the error
+  try {
+    await randomDelayedResponse();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 runTheRace();
