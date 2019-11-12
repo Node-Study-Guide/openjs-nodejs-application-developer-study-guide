@@ -1,7 +1,76 @@
 ---
 layout: base.njk
 ---
+<<<<<<< HEAD
 
 <h1>{{ title }}</h1>
 
 {{ content | safe }}
+=======
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+    <link rel="stylesheet" href="{{ "/css/main.css" | url }}">
+    <link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+    <script src="{{ "/js/main.js" | url }}"></script>
+  </head>
+  <body>
+    <header class="container">
+      <div class="row">
+        <div class="column column-50">
+          <h1 class="logo">
+            <a href="/">ONAD Study Guide</a>
+          </h1>
+        </div>
+        <div class="top-links column column-50">
+          <ul>
+            <li>
+              <a href="https://training.linuxfoundation.org/certification/jsnad/" target="_blank" title="OpenJS Node.js Application Developer (JSNAD)">JSNAD Certification</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      <div class="row">
+        <div class="sidebar column">
+          <nav>
+            <ul class="topics">
+              {% for topic in topics %}
+                <li data-topic="{{topic.url}}">
+                  <a href="{{ topic.url | url }}" {% if page.url === topic.url %} class="current" {% endif %}>{{topic.title}}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        </div>
+        <div class="main-content column column-75">
+          <h1>{{ title }}</h1>
+          {{ content | safe }}
+        </div>
+      </div>
+    </main>
+    <footer class="container">
+      <div class="row">
+        <div class="column column-75 column-offset-25">
+          <p>
+            <a href="https://github.com/Node-Study-Guide/openjs-nodejs-application-developer-study-guide/tree/master/{{ page.inputPath }}">Edit this page on GitHub</a>
+          </p>
+        </div>
+      </div>
+
+    </footer>
+  </body>
+</html>
+>>>>>>> Adapting repl code to apply to all code blocks automatically
