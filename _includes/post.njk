@@ -9,7 +9,7 @@ templateClass: tmpl-post
   <span class="author">Author: <a href="{{ authors[author].link | url }}">{{authors[author].name}}</a>
   </span>
   <br/>
-  <time datetime="{{ post.date | dateIso }}">{{ post.date | dateReadable }}</time>
+  <time datetime="{{ date | dateIso }}">{{ date | dateReadable }}</time>
 </p>
 
 {{ content | safe }}
