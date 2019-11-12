@@ -2,6 +2,8 @@
 layout: post.njk
 title: Events
 url: events
+author: ian
+date: Last Modified
 ---
 
 The Node.js core API is built around the idea of events being "emitted" and "listened" to. Objects called "emitters" emit _named_ events, that are picked up by "listener" functions.
