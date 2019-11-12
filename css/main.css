@@ -12,6 +12,7 @@ main h1 {
 a {
   color: #80bd01;
   font-weight: bold;
+  transition: all 200ms ease-out;
 }
 
 a:hover {
@@ -60,12 +61,41 @@ a:hover {
 .sidebar a {
   color: #888;
   font-weight: normal;
+  position: relative;
+  transition: opacity 0.5s ease-out, padding 0.5s cubic-bezier(0, 1, 0.5, 1);
 }
 
 .sidebar a.current {
   color: #80bd01;
+  opacity: 1 !important;
+}
+
+.sidebar .completed a {
+  opacity: 0.5;
+  padding-left: 20px;
+  transition: opacity 0.5s ease-out;
+}
+
+.sidebar a:before {
+  content: "✔️";
+  color: #80bd01;
+  left: 0;
+  position: absolute;
+  transform: scale(0) translateX(-40px);
+  transition: transform 0.5s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+}
+
+.sidebar .completed a:before {
+  transform: scale(1);
 }
 
 .sidebar a:hover {
   color: #80bd01;
+  opacity: 1;
+}
+
+.completed-button.completed {
+  background-color: #fff;
+  border-color: #80bd01;
+  color: #333;
 }
