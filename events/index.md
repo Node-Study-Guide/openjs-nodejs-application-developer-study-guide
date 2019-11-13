@@ -16,6 +16,8 @@ When the EventEmitter object emits an event, all of the functions attached to th
 
 This example creates an event listener for `foo` events, and an event emitter to fire these events.
 
+<div class="repl-code">
+
 ```javascript
 const { EventEmitter } = require('events');
 
@@ -35,23 +37,34 @@ eventEmitter.on('foo', foo);
 eventEmitter.emit('foo');
 ```
 
+</div>
+
 ## Passing parameters
 
 When an event is emitted using the `emit` method, the subsequent arguments are passed through to the listeners.
 
 For example:
 
-```
+<div class="repl-code">
+
+```javascript
+const { EventEmitter } = require('events');
+
+// create an emitter and bind some events to it
+const eventEmitter = new EventEmitter();
+
 const foo = function foo(bar) {
-  console.log(`foo has been passed ${bar}`)
-}
+  console.log(`foo has been passed ${bar}`);
+};
 
 // Bind the connection event with the listner1 function
-eventEmitter.on('foo', foo)
+eventEmitter.on('foo', foo);
 
 // fire the event
-eventEmitter.emit('foo', 'bar')
+eventEmitter.emit('foo', 'bar');
 ```
+
+</div>
 
 ## Summary
 

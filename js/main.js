@@ -1,8 +1,40 @@
+/* Add an edit in repl link to code blocks */
+
+function checkForReplLinks() {
+  // const replCode = document.querySelectorAll('pre');
+  // [...replCode].forEach(pre => {
+  //   console.log(pre);
+  //   const text = encodeURI(pre.innerText);
+  //   const link = document.createElement('a');
+  //   link.title = 'Run this code in the REPL';
+  //   link.innerText = 'Run this code in the REPL';
+  //   link.href = '/repl/?code=' + text;
+  //   const paragraph = document.createElement('p');
+  //   paragraph.appendChild(link);
+  //   const wrapper = document.createElement('div');
+  //   pre.parentNode.insertBefore(wrapper, pre);
+  //   wrapper.appendChild(pre);
+  //   wrapper.appendChild(paragraph);
+  // });
+  const replCode = document.querySelectorAll('.repl-code');
+  [...replCode].forEach(code => {
+    const codeText = encodeURI(code.innerText);
+    const link = document.createElement('a');
+    link.title = 'Run this code in the REPL';
+    link.innerText = 'Run this code in the REPL';
+    link.href = '/repl/?code=' + codeText;
+    const paragraph = document.createElement('p');
+    paragraph.appendChild(link);
+    code.appendChild(paragraph);
+  });
+}
+
 window.addEventListener('DOMContentLoaded', event => {
   if (window.localStorage) {
     window.topicsCompleted = getTopicsFromLocalStorage();
     updateUI();
   }
+  checkForReplLinks();
 });
 
 function updateUI() {
