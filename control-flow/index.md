@@ -2,7 +2,7 @@
 layout: post
 title: Control Flow
 author: donovan
-date: Last Modified
+date: 2019-11-12
 ---
 
 JavaScript programs are made up of series of instructions. When our programs run, they run in sequence from the top down, one line at a time. Most lines of are _synchronous_, meaning they run in order. However not all do. Sometimes _asynchronous_ code can cause our code to execute in an unexpected order.
