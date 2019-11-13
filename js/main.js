@@ -3,7 +3,7 @@
 function checkForReplLinks() {
   const replCode = document.querySelectorAll('.repl-code');
   [...replCode].forEach(code => {
-    const codeText = encodeURI(code.innerText);
+    const codeText = encodeURIComponent(code.innerText);
     const link = document.createElement('a');
     link.title = 'Run this code in the REPL';
     link.innerText = 'Run this code in the REPL';

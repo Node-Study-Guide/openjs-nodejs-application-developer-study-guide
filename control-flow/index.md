@@ -9,6 +9,8 @@ JavaScript programs are made up of series of instructions. When our programs run
 
 Consider the following code.
 
+<div class="repl-code">
+
 ```
 console.log('Clean teeth');
 setTimeout(() => {
@@ -16,6 +18,8 @@ setTimeout(() => {
 });
 console.log('Wash face and hands');
 ```
+
+</div>
 
 In the above code our compiler goes through each line executing each instruction. First it logs `Clean teeth`. Then it doesn't hang around for the `setTimeout`, it simply carries on and logs `Wash face and hands`. Then (a small moment later), it will log `Use lavatory`.
 
@@ -33,6 +37,8 @@ Let's say we have to get some data from an external service. We don't know how l
 
 To simulate this I've created a `randomDelayedResponse` function that will return a response after an unspecified amount of time.
 
+<div class="repl-code">
+
 ```
 function randomDelayedResponse(text) {
   // Using a timeout here for the sake of simulating an external request
@@ -47,9 +53,13 @@ const output = randomDelayedResponse('Hello');
 console.log(output); // undefined
 ```
 
+</div>
+
 Notice that the final line above returns `undefined`. This is because the `randomDelayedResponse` line is _non_blocking_ and hasn't returned anything to `output` before we then try to apply `console.log` to it.
 
 We need to wait until the response is ready. One way is to pass our `console.log` in to `randomDelayedResponse` as a function.
+
+<div class="repl-code">
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -64,11 +74,15 @@ const output = randomDelayedResponse('Hello', text => console.log(text)); // out
 console.log(output); // still empty
 ```
 
+</div>
+
 We pass the function `text => console.log(text)` as the second parameter, and this function is then called after the `setTimeout`.
 
 This might be reasonable in simple situations but it's easy for callbacks to get out of control. For example, if we have many different calls to this slow function that need to be run in order. To achieve this control we need to nest further.
 
 To show many responses, consider the following code. If we ran them beside each other, the output would not be reliable.
+
+<div class="repl-code">
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -85,9 +99,13 @@ randomDelayedResponse(4, console.log); // outputs 4
 // Who will win?
 ```
 
+</div>
+
 Here we pass in the function `console.log` as the second argument which is then run as `callback(text)` to log the output.
 
 While the code does run in order and run the `randomDelayedResponse` function with the right sequence of inputs, the random delays mean they won't be logged in order. We can run the above code multiple times and the result is never predictable. Each call to the function is _asynchronous_, in that the results do not arrive in order. To create a predictable, _synchronous_ flow using callbacks we'd need to nest them.
+
+<div class="repl-code">
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -111,6 +129,8 @@ randomDelayedResponse(1, text => {
 }); // outputs "1 2 3 4"
 ```
 
+</div>
+
 Structuring these callbacks outputs the numbers in the correct order. However when we use `callbacks` the code can become difficult to understand and maintain. This might be suitable in simple cases. Though if we find ourselves nesting multiple levels deep we should look for other ways to control the flow.
 
 Let's look at one such alternative.
@@ -133,6 +153,8 @@ ourPromiseFunction() // returns a promise that will resolve or reject
 ```
 
 We can rewrite our runner example using promises like so:
+
+<div class="repl-code">
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -169,6 +191,8 @@ randomDelayedResponse(1)
 // outputs "1 2 3 4"
 ```
 
+</div>
+
 Running the above code should output the correct order, albeit with random delays between each number.
 
 In the above example we shouldn't see any errors - but if you want to adjust one of the `andomDelayedResponse()` calls to pass in no data, it should `reject` and the `catch` block will log the error.
@@ -178,6 +202,8 @@ Promises remove the nesting and give us easier to read code. Let's look at a thi
 ## Async / Await
 
 The third approach is built on top of the existing _promises_ approach and results in even simpler code. With `async` and `await` we can write code that feels a lot more like our usual top-down code. It works by telling our commands to wait when we need them to. Let's rewrite our _who will win?_ example from above.
+
+<div class="repl-code">
 
 ```
 function randomDelayedResponse(text, callback) {
@@ -215,6 +241,8 @@ async function runTheRace() { // put `async` before the function call
 runTheRace();
 ```
 
+</div>
+
 In the above we have replaced the series of `.then()` calls with an `async` function. It's still making use of a _promise_ but when we want to wait for the promise we simply place `await` before the asynchronous function. The code execution order is preserved.
 
 You may be wondering how we handle errors here. One approach is to use the `try/catch` method. We'll be covering that and more in the [error handling section]({{ "/error-handling/" | url }}).
@@ -226,6 +254,8 @@ Generally you should try to aim for the `async/await` approach when possible. It
 ## Exercise
 
 Given the following code, how would you change it so that the results always outputs `hello world`? Can you make it work using all 3 of the above approaches?
+
+<div class="repl-code">
 
 ```
 function hello() {
@@ -243,14 +273,19 @@ function world() {
 }
 ```
 
+</div>
+
 ## Suggested solution
 
 <button class="show-solution" onClick={showSolution()}>Show solution</button>
 
 <div class="solution hidden">
 
+<div class="repl-code">
+
 ```
-# Callbacks
+// Callbacks
+
 function hello(callback) {
   const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
@@ -260,17 +295,21 @@ function hello(callback) {
 }
 
 function world() {
-  const timeOut = Math.floor(Math.random() _ 10) + 1;
+  const timeOut = Math.floor(Math.random() * 100) + 1;
   setTimeout(() => {
     console.log('world');
-  }, timeOut _ 10);
+  }, timeOut);
 }
 
 hello(world);
 ```
 
+</div>
+
+<div class="repl-code">
+
 ```
-# Promises
+// Promises
 
 function hello() {
   return new Promise((resolve, reject) => {
@@ -301,8 +340,12 @@ hello()
 
 ```
 
+</div>
+
+<div class="repl-code">
+
 ```
-# Async / Await
+// Async / Await
 
 function hello() {
   return new Promise((resolve, reject) => {
@@ -324,14 +367,18 @@ function world() {
 
 async function helloWorld() {
   try {
-    const hello = await hello();
-    const world = await world();
-    console.log(`${hello} ${world}`);
+    const helloOutput = await hello();
+    const worldOutput = await world();
+    console.log(`${helloOutput} ${worldOutput}`);
   } catch (err) {
     throw(err);
   }
 }
+
+helloWorld();
 ```
+
+</div>
 
 </div>
 
