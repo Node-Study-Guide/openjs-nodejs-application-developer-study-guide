@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", event => {
+window.addEventListener('DOMContentLoaded', event => {
   if (window.localStorage) {
     window.topicsCompleted = getTopicsFromLocalStorage();
     updateUI();
@@ -22,7 +22,7 @@ function checkForCompletedButtons() {
 }
 
 function getButtons() {
-  return document.querySelectorAll(".completed-button");
+  return document.querySelectorAll('.completed-button');
 }
 
 function toggleCompletedTopic(topic) {
@@ -40,17 +40,17 @@ function isCompleted(topic) {
 }
 
 function markButtonAsCompleted(button) {
-  button.classList.add("completed");
-  button.innerText = "Completed!";
+  button.classList.add('completed');
+  button.innerText = 'Completed!';
 }
 
 function markButtonAsNotCompleted(button) {
-  button.classList.remove("completed");
-  button.innerText = "Mark as completed";
+  button.classList.remove('completed');
+  button.innerText = 'Mark as completed';
 }
 
 function getTopicsFromLocalStorage() {
-  return JSON.parse(window.localStorage.getItem("topicsCompleted"));
+  return JSON.parse(window.localStorage.getItem('topicsCompleted'));
 }
 
 function addCompletedTopic(topic) {
@@ -64,7 +64,7 @@ function addCompletedTopic(topic) {
 
 function save(topics) {
   window.topicsCompleted = topics;
-  window.localStorage.setItem("topicsCompleted", JSON.stringify(topics));
+  window.localStorage.setItem('topicsCompleted', JSON.stringify(topics));
 }
 
 function removeCompletedTopic(topic) {
@@ -73,16 +73,16 @@ function removeCompletedTopic(topic) {
 }
 
 function getSidebarItems() {
-  return document.querySelectorAll(".topics li");
+  return document.querySelectorAll('.topics li');
 }
 
 function checkSideBar() {
   [...getSidebarItems()].forEach(item => {
     const topic = item.dataset.topic;
     if (isCompleted(topic)) {
-      item.classList.add("completed");
+      item.classList.add('completed');
     } else {
-      item.classList.remove("completed");
+      item.classList.remove('completed');
     }
   });
 }

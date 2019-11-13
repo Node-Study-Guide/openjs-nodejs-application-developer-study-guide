@@ -114,7 +114,7 @@ A paragraph (from the Greek paragraphos, “to write beside” or “written bes
 
 ```javascript
 function whereTo() {
-  const foo = "bar";
+  const foo = 'bar';
   for (let i = 0; i < 10; i++) {
     console.log(foo);
   }
