@@ -8,4 +8,4 @@ url: buffers
 
 ### Usage
 
-The NodeJS Buffer class is a global class and therefore does not need to be imported into a module.
+The Node `Buffer` class is a global class and therefore does not need to be imported into a module.
