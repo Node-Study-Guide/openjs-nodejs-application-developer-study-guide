@@ -42,6 +42,8 @@ using `Buffer.from()`.
 
 Buffers can also be instantiated by size using `Buffer.alloc()`, `Buffer.allocUnsafe()` and `Buffer.allocUnsafeSlow()`
 
+// The next line should be an 'aside', how to do this in markdown and the rendered site?
+
 > _Unsafe_ as the memory containing the buffer is not initialised - i.e. not zeroed-out, so the potential exists for sensitive data to be leaked.
 
 ```
@@ -58,3 +60,27 @@ const myBuffer3 = Buffer.alloc(3, 'a');
 console.log(myBuffer3);
 // <Buffer 61 61 61>
 ```
+
+### Caveat: Buffer size
+
+Once instantiated, using either `from()` or one of the `alloc()` methods a Buffer cannot be resized.
+
+A Buffer's size is measured in Octets which is a more accurate way of saying 'an 8-bit byte'.
+
+```
+const myBuffer4 = Buffer.alloc(4);
+console.log(myBuffer4);
+// <Buffer 00 00 00 00>
+myBuffer4.write('card');
+console.log(myBuffer4);
+// <Buffer 63 61 72 64>
+myBuffer4.write('cards');
+console.log(myBuffer4);
+// <Buffer 63 61 72 64> - last character is lost
+```
+
+## Terminology
+
+**Octet**
+
+An Octet is a more accurate way to describe a byte consisting of 8-bits. In some systems a byte can have more or less bits.
