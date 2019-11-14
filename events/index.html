@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/main.js"></script>
+  </head>
+  <body>
+    <header class="container">
+      <div class="row">
+        <div class="column column-50">
+          <h1 class="logo">
+            <a href="/">ONAD Study Guide</a>
+          </h1>
+        </div>
+        <div class="top-links column column-50">
+          <ul>
+            <li>
+              <a href="https://training.linuxfoundation.org/certification/jsnad/" target="_blank" title="OpenJS Node.js Application Developer (JSNAD)">JSNAD Certification</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      <div class="row">
+        <div class="sidebar column">
+          <nav>
+            <ul class="topics">
+              
+                <li data-topic="/buffers-and-streams/">
+                  <a href="/buffers-and-streams/" >Buffers and Streams</a>
+                </li>
+              
+                <li data-topic="/control-flow/">
+                  <a href="/control-flow/" >Control flow</a>
+                </li>
+              
+                <li data-topic="/child-processes/">
+                  <a href="/child-processes/" >Child Processes</a>
+                </li>
+              
+                <li data-topic="/diagnostics/">
+                  <a href="/diagnostics/" >Diagnostics</a>
+                </li>
+              
+                <li data-topic="/error-handling/">
+                  <a href="/error-handling/" >Error Handling</a>
+                </li>
+              
+                <li data-topic="/nodejs-cli/">
+                  <a href="/nodejs-cli/" >Node.js CLI</a>
+                </li>
+              
+                <li data-topic="/events/">
+                  <a href="/events/"  class="current" >Events</a>
+                </li>
+              
+                <li data-topic="/file-system/">
+                  <a href="/file-system/" >File System</a>
+                </li>
+              
+                <li data-topic="/javascript-prerequisites/">
+                  <a href="/javascript-prerequisites/" >JavaScript Prerequisites</a>
+                </li>
+              
+                <li data-topic="/module-system/">
+                  <a href="/module-system/" >Module system</a>
+                </li>
+              
+                <li data-topic="/process-operating-system/">
+                  <a href="/process-operating-system/" >Process/Operating System</a>
+                </li>
+              
+                <li data-topic="/package-json/">
+                  <a href="/package-json/" >Package.json</a>
+                </li>
+              
+                <li data-topic="/unit-testing/">
+                  <a href="/unit-testing/" >Unit Testing</a>
+                </li>
+              
+            </ul>
+          </nav>
+        </div>
+        <div class="main-content column column-75">
+          
+<h1>Events</h1>
+
+<p class="metadata">
+  <span class="author">Author: <a href="/about/#ian">Ian Read</a>
+  </span>
+  <br/>
+  <time datetime="2019-11-09T00:00:00.000Z">November 9, 2019</time>
+</p>
+
+<p>The Node.js core API is built around the idea of events being &quot;emitted&quot; and &quot;listened&quot; to. Objects called &quot;emitters&quot; emit <em>named</em> events, that are picked up by &quot;listener&quot; functions.</p>
+<p>Objects that emit events extend the <code>EventEmitter</code> class. These objects expose an <code>on</code> method that allows one or more functions to be attached to named events emitted by the object.</p>
+<p>When the EventEmitter object emits an event, all of the functions attached to that specific event are called <em>synchronously</em>, in the order they were added. This is to prevent race conditions and logic errors. They can switch to an async mode using <code>setImmediate</code>.</p>
+<h2>A Simple Example</h2>
+<p>This example creates an event listener for <code>foo</code> events, and an event emitter to fire these events.</p>
+<div class="repl-code">
+<pre><code class="language-javascript">const { EventEmitter } = require('events');
+
+// create a listener function. These can be arrow functions, but will
+// loose `this` refering to the EventEmitter object
+const foo = function foo() {
+  console.log('foo executed.', this);
+};
+
+// create an emitter and bind some events to it
+const eventEmitter = new EventEmitter();
+
+// Bind the connection event with the listner1 function
+eventEmitter.on('foo', foo);
+
+// fire the event
+eventEmitter.emit('foo');
+</code></pre>
+</div>
+<h2>Passing parameters</h2>
+<p>When an event is emitted using the <code>emit</code> method, the subsequent arguments are passed through to the listeners.</p>
+<p>For example:</p>
+<div class="repl-code">
+<pre><code class="language-javascript">const { EventEmitter } = require('events');
+
+// create an emitter and bind some events to it
+const eventEmitter = new EventEmitter();
+
+const foo = function foo(bar) {
+  console.log(`foo has been passed ${bar}`);
+};
+
+// Bind the connection event with the listner1 function
+eventEmitter.on('foo', foo);
+
+// fire the event
+eventEmitter.emit('foo', 'bar');
+</code></pre>
+</div>
+<h2>Summary</h2>
+<p>Listeners <em>listen</em> for events, that are <em>emitted</em> from emitters.</p>
+<p>Take me to <a href="/cheatsheet/#events">cheat sheet</a></p>
+<h2>Exercise</h2>
+<p>Imagine we are building a SaaS that does a number of things when a user creates an account. When a user record
+is created, we want to emit a <code>userCreated</code> event. One of the listeners for this will email a confirmation
+email to that user.</p>
+<p>Build an event emitter to simulate the <code>userCreated</code> event, and an event listener that sends a confirmation email. There is a mock emailer class in the folder that has a method <code>send</code>, which expects an email address and a message body as the parameters.</p>
+
+
+<h3>Ready to mark Events as completed?</h3>
+
+<button onClick="toggleCompletedTopic('/events/')" data-topic="/events/" class="completed-button">Mark as completed</button>
+        </div>
+      </div>
+    </main>
+    <footer class="container">
+      <div class="row">
+        <div class="column column-75 column-offset-25">
+          <p>
+            <a href="https://github.com/Node-Study-Guide/openjs-nodejs-application-developer-study-guide/tree/master/./events/index.md">Edit this page on GitHub</a>
+          </p>
+        </div>
+      </div>
+
+    </footer>
+  </body>
+</html>

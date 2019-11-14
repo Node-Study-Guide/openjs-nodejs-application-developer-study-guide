@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Flow</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/main.js"></script>
+  </head>
+  <body>
+    <header class="container">
+      <div class="row">
+        <div class="column column-50">
+          <h1 class="logo">
+            <a href="/">ONAD Study Guide</a>
+          </h1>
+        </div>
+        <div class="top-links column column-50">
+          <ul>
+            <li>
+              <a href="https://training.linuxfoundation.org/certification/jsnad/" target="_blank" title="OpenJS Node.js Application Developer (JSNAD)">JSNAD Certification</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      <div class="row">
+        <div class="sidebar column">
+          <nav>
+            <ul class="topics">
+              
+                <li data-topic="/buffers-and-streams/">
+                  <a href="/buffers-and-streams/" >Buffers and Streams</a>
+                </li>
+              
+                <li data-topic="/control-flow/">
+                  <a href="/control-flow/"  class="current" >Control flow</a>
+                </li>
+              
+                <li data-topic="/child-processes/">
+                  <a href="/child-processes/" >Child Processes</a>
+                </li>
+              
+                <li data-topic="/diagnostics/">
+                  <a href="/diagnostics/" >Diagnostics</a>
+                </li>
+              
+                <li data-topic="/error-handling/">
+                  <a href="/error-handling/" >Error Handling</a>
+                </li>
+              
+                <li data-topic="/nodejs-cli/">
+                  <a href="/nodejs-cli/" >Node.js CLI</a>
+                </li>
+              
+                <li data-topic="/events/">
+                  <a href="/events/" >Events</a>
+                </li>
+              
+                <li data-topic="/file-system/">
+                  <a href="/file-system/" >File System</a>
+                </li>
+              
+                <li data-topic="/javascript-prerequisites/">
+                  <a href="/javascript-prerequisites/" >JavaScript Prerequisites</a>
+                </li>
+              
+                <li data-topic="/module-system/">
+                  <a href="/module-system/" >Module system</a>
+                </li>
+              
+                <li data-topic="/process-operating-system/">
+                  <a href="/process-operating-system/" >Process/Operating System</a>
+                </li>
+              
+                <li data-topic="/package-json/">
+                  <a href="/package-json/" >Package.json</a>
+                </li>
+              
+                <li data-topic="/unit-testing/">
+                  <a href="/unit-testing/" >Unit Testing</a>
+                </li>
+              
+            </ul>
+          </nav>
+        </div>
+        <div class="main-content column column-75">
+          
+<h1>Control Flow</h1>
+
+<p class="metadata">
+  <span class="author">Author: <a href="/about/#donovan">Donovan Hutchinson</a>
+  </span>
+  <br/>
+  <time datetime="2019-11-12T00:00:00.000Z">November 12, 2019</time>
+</p>
+
+<p>JavaScript programs are made up of series of instructions. When our programs run, they run in sequence from the top down, one line at a time. Most lines of are <em>synchronous</em>, meaning they run in order. However not all do. Sometimes <em>asynchronous</em> code can cause our code to execute in an unexpected order.</p>
+<p>Consider the following code.</p>
+<div class="repl-code">
+<pre><code>console.log('Clean teeth');
+setTimeout(() =&gt; {
+  console.log('Use lavatory');
+});
+console.log('Wash face and hands');
+</code></pre>
+</div>
+<p>In the above code our compiler goes through each line executing each instruction. First it logs <code>Clean teeth</code>. Then it doesn't hang around for the <code>setTimeout</code>, it simply carries on and logs <code>Wash face and hands</code>. Then (a small moment later), it will log <code>Use lavatory</code>.</p>
+<p>This is not what we want. We'll have to go wash our hands again. In production code, even worse things can happen.</p>
+<p>Node.js generally runs in one single thread and any <em>blocking</em> code will be run in sequence, with <em>non-blocking</em> code having the potential to run <em>asynchronously</em>. For more info you may want to take a look at <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">this talk on how the Event Loop works</a>.</p>
+<p>Thankfully Node.js offers 3 asynchronous approaches we can use to control the order in which our code executes. <em>Callbacks</em>, <em>promises</em> and <em>async/await</em>. Let's take a look at each.</p>
+<h2>Callbacks</h2>
+<p>Earlier in the development of Node.js it was common to use the <em>callback pattern</em> to control the order that code is executed. The pattern involves passing a function as a parameter (<em>callback</em>) into your functions, and then calling that <em>callback</em> when you're ready to continue.</p>
+<p>Let's say we have to get some data from an external service. We don't know how long this service might take to respond. We would need to wait until the service responds, we can't simply continue running code as we might need the response.</p>
+<p>To simulate this I've created a <code>randomDelayedResponse</code> function that will return a response after an unspecified amount of time.</p>
+<div class="repl-code">
+<pre><code>function randomDelayedResponse(text) {
+  // Using a timeout here for the sake of simulating an external request
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  const output = text;
+  setTimeout(() =&gt; {
+    return output;
+  }, timeOut);
+}
+
+const output = randomDelayedResponse('Hello');
+console.log(output); // undefined
+</code></pre>
+</div>
+<p>Notice that the final line above returns <code>undefined</code>. This is because the <code>randomDelayedResponse</code> line is <em>non_blocking</em> and hasn't returned anything to <code>output</code> before we then try to apply <code>console.log</code> to it.</p>
+<p>We need to wait until the response is ready. One way is to pass our <code>console.log</code> in to <code>randomDelayedResponse</code> as a function.</p>
+<div class="repl-code">
+<pre><code>function randomDelayedResponse(text, callback) {
+  // Using a timeout here for the sake of simulating an external request
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  setTimeout(() =&gt; {
+    callback(text);
+  }, timeOut);
+}
+
+const output = randomDelayedResponse('Hello', text =&gt; console.log(text)); // outputs &quot;Hello&quot;
+console.log(output); // still empty
+</code></pre>
+</div>
+<p>We pass the function <code>text =&gt; console.log(text)</code> as the second parameter, and this function is then called after the <code>setTimeout</code>.</p>
+<p>This might be reasonable in simple situations but it's easy for callbacks to get out of control. For example, if we have many different calls to this slow function that need to be run in order. To achieve this control we need to nest further.</p>
+<p>To show many responses, consider the following code. If we ran them beside each other, the output would not be reliable.</p>
+<div class="repl-code">
+<pre><code>function randomDelayedResponse(text, callback) {
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  setTimeout(() =&gt; {
+    callback(text);
+  }, timeOut);
+}
+
+randomDelayedResponse(1, console.log); // outputs 1
+randomDelayedResponse(2, console.log); // outputs 2
+randomDelayedResponse(3, console.log); // outputs 3
+randomDelayedResponse(4, console.log); // outputs 4
+// Who will win?
+</code></pre>
+</div>
+<p>Here we pass in the function <code>console.log</code> as the second argument which is then run as <code>callback(text)</code> to log the output.</p>
+<p>While the code does run in order and run the <code>randomDelayedResponse</code> function with the right sequence of inputs, the random delays mean they won't be logged in order. We can run the above code multiple times and the result is never predictable. Each call to the function is <em>asynchronous</em>, in that the results do not arrive in order. To create a predictable, <em>synchronous</em> flow using callbacks we'd need to nest them.</p>
+<div class="repl-code">
+<pre><code>function randomDelayedResponse(text, callback) {
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  setTimeout(() =&gt; {
+    callback(text);
+  }, timeOut);
+}
+
+randomDelayedResponse(1, text =&gt; {
+  console.log(text);
+  randomDelayedResponse(2, text =&gt; {
+    console.log(text);
+    randomDelayedResponse(3, text =&gt; {
+      console.log(text);
+      randomDelayedResponse(4, text =&gt; {
+        console.log(text);
+      });
+    });
+  });
+}); // outputs &quot;1 2 3 4&quot;
+</code></pre>
+</div>
+<p>Structuring these callbacks outputs the numbers in the correct order. However when we use <code>callbacks</code> the code can become difficult to understand and maintain. This might be suitable in simple cases. Though if we find ourselves nesting multiple levels deep we should look for other ways to control the flow.</p>
+<p>Let's look at one such alternative.</p>
+<h2>Promises</h2>
+<p>To avoid this callback hell, we can use a different structure called <em>promises</em>. A promise is a function that returns a <em>resolved</em> response which we can chain using <code>then</code>, or a <em>rejected</em> response which we can <code>catch</code>. It follows this pattern:</p>
+<pre><code>ourPromiseFunction() // returns a promise that will resolve or reject
+  .then(response =&gt; {
+    return foo; // this could optionally be another promise
+  })
+  .then(foo =&gt; {
+    // they can be chained
+  })
+  .catch(error =&gt; {
+    // catch &quot;reject&quot; output here
+  });
+</code></pre>
+<p>We can rewrite our runner example using promises like so:</p>
+<div class="repl-code">
+<pre><code>function randomDelayedResponse(text, callback) {
+  return new Promise((resolve, reject) =&gt; {
+    const timeOut = Math.floor(Math.random() * 100) + 1;
+    setTimeout(() =&gt; {
+      if (!text) {
+          reject('No text provided!'); // Reject when there is no text provided
+      }
+      resolve(text); // Replacing the callback with &quot;resolve&quot;
+    }, timeOut);
+  });
+}
+
+randomDelayedResponse(1)
+  .then(res =&gt; {
+    console.log(res);
+    return randomDelayedResponse(2);
+  })
+  .then(res =&gt; {
+    console.log(res);
+    return randomDelayedResponse(3);
+  })
+  .then(res =&gt; {
+    console.log(res);
+    return randomDelayedResponse(4);
+  })
+  .then(res =&gt; {
+    console.log(res);
+  })
+  .catch(error =&gt; {
+    console.log(error);
+  })
+// outputs &quot;1 2 3 4&quot;
+</code></pre>
+</div>
+<p>Running the above code should output the correct order, albeit with random delays between each number.</p>
+<p>In the above example we shouldn't see any errors - but if you want to adjust one of the <code>andomDelayedResponse()</code> calls to pass in no data, it should <code>reject</code> and the <code>catch</code> block will log the error.</p>
+<p>Promises remove the nesting and give us easier to read code. Let's look at a third way that builds on this.</p>
+<h2>Async / Await</h2>
+<p>The third approach is built on top of the existing <em>promises</em> approach and results in even simpler code. With <code>async</code> and <code>await</code> we can write code that feels a lot more like our usual top-down code. It works by telling our commands to wait when we need them to. Let's rewrite our <em>who will win?</em> example from above.</p>
+<div class="repl-code">
+<pre><code>function randomDelayedResponse(text, callback) {
+  return new Promise((resolve, reject) =&gt; {
+    const timeOut = Math.floor(Math.random() * 100) + 1;
+    setTimeout(() =&gt; {
+      if (!text) {
+          reject('No text provided!');
+      }
+      resolve(text);
+    }, timeOut);
+  });
+}
+
+async function runTheRace() { // put `async` before the function call
+
+  console.log(1) // Not async
+
+  const result2 = await randomDelayedResponse(2); // async
+  console.log(result2);
+
+  console.log(3);
+
+  const result4 = await randomDelayedResponse(4);
+  console.log(result4);
+
+  // Catching the error
+  try {
+    await randomDelayedResponse();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+runTheRace();
+</code></pre>
+</div>
+<p>In the above we have replaced the series of <code>.then()</code> calls with an <code>async</code> function. It's still making use of a <em>promise</em> but when we want to wait for the promise we simply place <code>await</code> before the asynchronous function. The code execution order is preserved.</p>
+<p>You may be wondering how we handle errors here. One approach is to use the <code>try/catch</code> method. We'll be covering that and more in the <a href="/error-handling/">error handling section</a>.</p>
+<h2>Which is preferred?</h2>
+<p>Generally you should try to aim for the <code>async/await</code> approach when possible. It helps promote clean code. None of the approaches are to be avoided entirely, but in general always aim for the approach that ensures the code is easy to read and understand.</p>
+<h2>Exercise</h2>
+<p>Given the following code, how would you change it so that the results always outputs <code>hello world</code>? Can you make it work using all 3 of the above approaches?</p>
+<div class="repl-code">
+<pre><code>function hello() {
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  setTimeout(() =&gt; {
+    console.log('hello');
+  }, timeOut);
+}
+
+function world() {
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  setTimeout(() =&gt; {
+    console.log('world');
+  }, timeOut);
+}
+</code></pre>
+</div>
+<h2>Suggested solution</h2>
+<p><button class="show-solution" onClick={showSolution()}>Show solution</button></p>
+<div class="solution hidden">
+<div class="repl-code">
+<pre><code>// Callbacks
+
+function hello(callback) {
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  setTimeout(() =&gt; {
+    console.log('hello');
+    callback();
+  }, timeOut);
+}
+
+function world() {
+  const timeOut = Math.floor(Math.random() * 100) + 1;
+  setTimeout(() =&gt; {
+    console.log('world');
+  }, timeOut);
+}
+
+hello(world);
+</code></pre>
+</div>
+<div class="repl-code">
+<pre><code>// Promises
+
+function hello() {
+  return new Promise((resolve, reject) =&gt; {
+    const timeOut = Math.floor(Math.random() * 100) + 1;
+    setTimeout(() =&gt; {
+      resolve('hello');
+    }, timeOut);
+  });
+}
+
+function world() {
+  return new Promise((resolve, reject) =&gt; {
+    const timeOut = Math.floor(Math.random() * 100) + 1;
+    setTimeout(() =&gt; {
+      resolve('world');
+    }, timeOut);
+  });
+}
+
+hello()
+  .then(res =&gt; {
+    console.log(res);
+    return world();
+  })
+  .then(res =&gt; {
+    console.log(res)
+  });
+
+</code></pre>
+</div>
+<div class="repl-code">
+<pre><code>// Async / Await
+
+function hello() {
+  return new Promise((resolve, reject) =&gt; {
+    const timeOut = Math.floor(Math.random() * 100) + 1;
+    setTimeout(() =&gt; {
+      resolve('hello');
+    }, timeOut);
+  });
+}
+
+function world() {
+  return new Promise((resolve, reject) =&gt; {
+    const timeOut = Math.floor(Math.random() * 100) + 1;
+    setTimeout(() =&gt; {
+      resolve('world');
+    }, timeOut);
+  });
+}
+
+async function helloWorld() {
+  try {
+    const helloOutput = await hello();
+    const worldOutput = await world();
+    console.log(`${helloOutput} ${worldOutput}`);
+  } catch (err) {
+    throw(err);
+  }
+}
+
+helloWorld();
+</code></pre>
+</div>
+</div>
+<h2>Common Classes and Functions</h2>
+<h3>Callback pattern</h3>
+<pre><code>function foo(val1, val2, callback) {
+  ...
+  callback();
+}
+</code></pre>
+<h3>Promise pattern</h3>
+<pre><code>function foo(ok) {
+  return new Promise(resolve, reject) {
+    if (ok) {
+      resolve('success');
+    } else {
+      reject('boo');
+    }
+  }
+}
+
+foo()
+  .then(res =&gt; {
+    console.log(res);
+  })
+  .catch(err =&gt; {
+    throw err;
+  })
+</code></pre>
+<h3>Async/Await</h3>
+<pre><code>async function callFoo() {
+  try {
+    const result = await foo(true);
+  } catch(err) {
+    throw err;
+  }
+}
+</code></pre>
+<p>Be sure to check out the <a href="/cheatsheet/">cheat sheet</a> for more.</p>
+<h2>Further learning</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Glossary/Callback_function">Callback function</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await">Making asynchronous programming easier with async and await</a></li>
+<li>What the heck is the event loop anyway? (Philip Roberts, JSConf EU, 2014) (https://www.youtube.com/watch?v=8aGhZQkoFbQ)</li>
+</ul>
+
+
+<h3>Ready to mark Control Flow as completed?</h3>
+
+<button onClick="toggleCompletedTopic('/control-flow/')" data-topic="/control-flow/" class="completed-button">Mark as completed</button>
+        </div>
+      </div>
+    </main>
+    <footer class="container">
+      <div class="row">
+        <div class="column column-75 column-offset-25">
+          <p>
+            <a href="https://github.com/Node-Study-Guide/openjs-nodejs-application-developer-study-guide/tree/master/./control-flow/index.md">Edit this page on GitHub</a>
+          </p>
+        </div>
+      </div>
+
+    </footer>
+  </body>
+</html>
