@@ -15,6 +15,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPassthroughCopy("CNAME");
   eleventyConfig.addLayoutAlias("default", "default.njk");
+  eleventyConfig.addLayoutAlias("post", "post.njk");
   return {
     passthroughFileCopy: true
   };
