@@ -23,13 +23,13 @@ The Node.js APIS [Buffer](https://nodejs.org/docs/latest-v10.x/api/buffer.html) 
 
 The Node.js Buffer class implements buffers which are fixed size chunks of memory outside the V8 heap. Buffers are used to deal with binary data when dealing with TCP streams and reading/writing to the file system.
 
-[Buffers in depth](./buffers.md)
+[Buffers in depth](/buffers)
 
 ### Stream
 
 The Node.js Stream module provides an API for working with streaming data. Streams are a fundamental concept in, and are prevalent throughout applications built on, Node. Streams are an efficient way to handle sending and receiving data particularly for large or indeterminate amounts of data.
 
-[Streams in depth](./streams.md)
+[Streams in depth](/streams)
 
 ## Working with Buffers and Streams
 
