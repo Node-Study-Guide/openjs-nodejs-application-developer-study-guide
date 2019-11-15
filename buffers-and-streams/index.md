@@ -2,6 +2,8 @@
 layout: default
 title: Buffers and Streams
 url: buffers-and-streams
+author: john
+date: 2019-11-14
 ---
 
 The Node Application Developer Certification exam section for Buffers and Streams is worth 11% of the total and is broken into the following sections.

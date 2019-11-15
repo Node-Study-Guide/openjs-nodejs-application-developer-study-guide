@@ -2,17 +2,19 @@
 layout: default
 title: Buffers in depth
 url: buffers
+author: john
+date: 2019-11-14
 ---
 
 ## Buffers
 
-Node's `Buffer` class enables working with binary data in Javascript. A buffer is allows a programme to store data temporarily outside the V8 engine's stack.
+Node's `Buffer` class enables working with binary data in Javascript. A buffer allows a programme to store data temporarily outside the V8 engine's stack.
 
 Though not entirely accurate we can think of a buffer as an array of bytes, each byte is represented by a hexadecimal digit.
 
 The Node `Buffer` class is a global class and therefore does not need to be imported into a module.
 
-### A simple example
+### Example
 
 ```javascript
 // create a buffer from a string
@@ -45,6 +47,8 @@ Buffers can also be instantiated by size using `Buffer.alloc()`, `Buffer.allocUn
 // The next line should be an 'aside', how to do this in markdown and the rendered site?
 
 > _Unsafe_ as the memory containing the buffer is not initialised - i.e. not zeroed-out, so the potential exists for sensitive data to be leaked.
+
+### Example
 
 ```
 const myBuffer1 = Buffer.from([1, 2, 3]);
