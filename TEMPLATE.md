@@ -1,5 +1,5 @@
 ---
-layout: default.njk
+layout: default
 title: Your post title
 ---
 

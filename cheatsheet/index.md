@@ -1,5 +1,5 @@
 ---
-layout: default.njk
+layout: default
 title: Node Cheat Sheet
 ---
 
@@ -35,6 +35,51 @@ buf.length
 buf.toString([encoding[, start[, end]]])
 buf.values()
 buf.write(string[, offset[, length]][, encoding])
+
+## [Control Flow](#control-flow)
+
+### Callback pattern
+
+```
+function foo(val1, val2, callback) {
+  ...
+  callback();
+}
+```
+
+### Promise pattern
+
+```
+function foo(ok) {
+  return new Promise(resolve, reject) {
+    if (ok) {
+      resolve('success');
+    } else {
+      reject('boo');
+    }
+  }
+}
+
+foo()
+  .then(res => {
+    console.log(res);
+  })
+  .catch(err => {
+    throw err;
+  })
+```
+
+### Async/Await
+
+```
+async function callFoo() {
+  try {
+    const result = await foo(true);
+  } catch(err) {
+    throw err;
+  }
+}
+
 ```
 
 ## [Events](#events)
