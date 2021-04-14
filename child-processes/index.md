@@ -40,6 +40,13 @@ child.on('exmessageit', function (code, signal) {
 spawn(  ).stdout.pipe(process.stdout)
 
 ```
+
+_Not reviwewed/edited after this_
+
+
+
+
+
 The returned process object will hold a property for each std type represented as a Stream: .stdin - WriteStream, .stout - ReadStream and finally .stderr - ReadStream. Accordingly, if we would like to run git log through a Node process and print it to the console we would do something like the following:
 
 Every child process also gets the three standard stdio streams, which we can access using child.stdin, child.stdout, and child.stderr.
@@ -79,10 +86,5 @@ Why is this module called child_process and not just process? First of all, not 
 
 ```
 
-
-
-
 More reading: [Node.js Child Processes: Everything you need to know
 ](https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/)
-
-
