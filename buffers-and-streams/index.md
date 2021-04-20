@@ -1,5 +1,5 @@
 ---
-layout: default.njk
+layout: default
 title: Buffers and Streams
 ---
 

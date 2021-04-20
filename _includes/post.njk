@@ -1,0 +1,19 @@
+---
+layout: base.njk
+templateClass: tmpl-post
+---
+
+<h1>{{ title }}</h1>
+
+<p class="metadata">
+  <span class="author">Author: <a href="{{ authors[author].link | url }}">{{authors[author].name}}</a>
+  </span>
+  <br/>
+  <time datetime="{{ date | dateIso }}">{{ date | dateReadable }}</time>
+</p>
+
+{{ content | safe }}
+
+<h3>Ready to mark {{title}} as completed?</h3>
+
+<button onClick="toggleCompletedTopic('{{page.url}}')" data-topic="{{page.url}}" class="completed-button">Mark as completed</button>
