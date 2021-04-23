@@ -3,4 +3,6 @@ layout: default
 title: Child Processes
 ---
 
-I've seen things you people wouldn't believe. Attack ships on fire off the shoulder of Orion. I watched C-beams glitter in the dark near the Tannhäuser Gate. All those moments will be lost in time, like child processes.
+Coming soon.
+
+In the meantime, please see https://nodejs.org/api/child_process.html
