@@ -1,15 +1,14 @@
 const { spawn } = require('child_process');
+const ls = spawn('ls', ['-l']);
 
-const child = spawn('pwd');
-
-child.on('exit', function (code, signal) {
-  console.log(`child process exited with code ${code} and signal ${signal}`);
+ls.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
 });
 
-child.on('message', function (message) {
-  console.log(`child process messaged with message ${message}`);
+ls.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`);
 });
 
-spawn('git', ['log']).stdout.pipe(process.stdout)
-spawn('ls').stdout.pipe(process.stdout)
-  
+ls.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
+});
