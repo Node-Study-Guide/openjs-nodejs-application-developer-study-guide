@@ -160,9 +160,6 @@ child3.on('exit', () => {
   console.log('child3 exited');
 });
 ```
-</div>
-
-```
 
 ## ChildProcess Events
 
