@@ -130,7 +130,6 @@ process.on('message', ({ n }) => {
 The parent process creates 3 child processes, and passes a range of numbers to them for calculating.
 
 ```javascript
-
 const { fork } = require('child_process')
 
 const child1 = fork('fork-child')
