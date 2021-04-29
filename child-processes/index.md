@@ -7,11 +7,15 @@ author: ian
 
 _Prerequisites: [events](../events), [streams](../buffers-and-streams)_
 
+The typical operating system has different processes running in the background, and each process is being managed by a single-core of our CPU and will run a series of calculations each time it is being ticked. To take full advantage of our CPU using a single process, we would need a number of processes that is at least equal to the number of cores in our CPU. In addition, each process might be responsible for running a series of calculations of different logic, which will give the end user a better control over the CPU’s behavior.
+
 The `child_process` module provides the ability to spawn child processes and interact with other programs. Whilst single-threaded, non-blocking performance in Node.js is great for a single process, we can use `child_process` to handle the increasing workload in our applications in multiple threads.
 
 Using multiple processes allows a Node application to scale. Node is designed for building distributed applications with many nodes, hence it's name Node.
 
 Pipes for `stdin`, `stdout`, and `stderr` are established between the parent Node process and the spawned subprocess. The behaviour matches that of pipes in the shell.
+
+The examples in this article are all Linux-based. On Windows, you will need to switch the commands I use with their Windows alternatives or use a Linux-like shell.
 
 # `exec` vs `spawn`
 
@@ -23,8 +27,7 @@ There are two main approaches to running child processesL `exec` and `spawn`.
 | buffers the data (waits until the process finishes and transfers all the data ) | Streams the data returned by the child process (data flow is constant) |
 | maximum data transfer 200kb (by default                    | has no data transfer size limit                             |
 
-Typically, `spawn` is more suitable for long-running process with large outputs. spawn streams input/output with child process. `exec` buffered output in a small (by default 200K) buffer. 
-
+Typically, `spawn` is more suitable for long-running process with large outputs. spawn streams input/output with child process. `exec` buffered output in a small (by default 200K) buffer.
 
 ## A Simple `exec`
 
@@ -103,26 +106,65 @@ wc.on('close', (code) => {
 ```
 </div>
 
-
 # fork
 
+`fork` is a special version of `spawn' that allows messages to be sent between the Node processes.
 
-_To do_
+Unfortunately, we are unable to run this example in the REPL because it requires separate files. So this example is best run locally on your favourite terminal.
 
-child_process.fork(): spawns a new Node.js process and invokes a specified module with an IPC communication channel established that allows sending messages between parent and child.
+In this example, we are going to create a child process that can receive a number, and then calculates the fibonacci of that number. This has been implemented inefficiently to illustrate long running processes. The `message` event is used to listen for requests, and the payload is destructed for a numerical value, `n`.
 
+```javascript
 
+const fibonacci = (num) => num <= 1 ? 1 : fibonacci(num - 1) + fibonacci(num - 2)
 
-const exec_options = {
-    cwd: null,
-    env: null,
-    encoding: 'utf8',
-    timeout: 0,
-    maxBuffer: 200 * 1024,
-    killSignal: 'SIGTERM'
-};
+process.on('message', ({ n }) => {
+  process.send({ fib: fibonacci(n), n })
+  // optional - there is no reason why this child process
+  // can't be called multiple times.
+  process.exit()
+})
+ 
+```
 
+The parent process creates 3 child processes, and passes a range of numbers to them for calculating.
 
+```javascript
+
+const { fork } = require('child_process')
+
+const child1 = fork('fork-child')
+const child2 = fork('fork-child')
+const child3 = fork('fork-child')
+
+// send data to the child process to perform the calculation
+child1.send({ n: 5 });
+child2.send({ n: 10 });
+child3.send({ n: 45 });
+
+child1.on('message', (m) => {
+  console.log('PARENT child1 got message:', m);
+});
+child2.on('message', (m) => {
+  console.log('PARENT child2 got message:', m);
+});
+child3.on('message', (m) => {
+  console.log('PARENT child3 got message:', m);
+});
+
+child1.on('exit', () => {
+  console.log('child1 exited');
+});
+child2.on('exit', () => {
+  console.log('child2 exited');
+});
+child3.on('exit', () => {
+  console.log('child3 exited');
+});
+```
+</div>
+
+```
 
 ## ChildProcess Events
 
@@ -136,45 +178,16 @@ The `child` processes communicates by emitting events to let the `parent` know w
 | `close`      | The `stdio` streams of a child process get closed.                          |
 | `message`    | This `child` process uses the `send` method to communicate with the parent. |
 
+## A note on options
 
-_Not reviwewed/edited after this_
+These processes all accept an optional options object that allow us to control the context that the processes are run within. These vary for each method, and are described in detail in the [node documentation for `child_process`](https://nodejs.org/api/child_process.html).
 
+## Summary
 
+Parents `spawm`, `fork` or `exec` child processes, and communicate via events or pipes.
 
+Take me to [cheat sheet]({{ "/cheatsheet/#child-process" | url }})
 
+## Exercise
 
-`spawn`
-
-The first parameter is the path for an executable file that starts the process, and the second argument is the arguments that will be passed into the process.
-
-
-
-
-There are four different ways to create a child process in Node: spawn(), fork(), exec(), and execFile().
-
-Note that examples I’ll be using in this article are all Linux-based. On Windows, you need to switch the commands I use with their Windows alternatives. - find what they are...
-
-
-spawn - spwans a new process, which can pass the command any arguments
-
-
-
-
-So we can interact with the `ChildProcess` by listening for a series of events.
-
-
-```
-
-
-As you probably know, our typical OS has different processes running in the background. Each process is being managed by a single-core of our CPU and will run a series of calculations each time it is being ticked. As such, we can’t take full advantage of our CPU using a single process, we would need a number of processes that is at least equal to the number of cores in our CPU. In addition, each process might be responsible for running a series of calculations of different logic, which will give the end user a better control over the CPU’s behavior.
-
-Why is this module called child_process and not just process? First of all, not to confuse with the main process instance global.process, and second, the child process is derived from the main process, which means that both can communicate - the main process will hold streams for the child process’s std types and they will both share an ipc channel (“Inter Process Communication” channel; more on that further this article).
-
-
-
-
-
-```
-
-More reading: [Node.js Child Processes: Everything you need to know
-](https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/)
+Create a child process for doing some manipulation of a file or URL, and build a parent process that controls a number of these processes in parallel.
