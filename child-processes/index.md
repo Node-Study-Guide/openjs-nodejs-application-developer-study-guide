@@ -38,7 +38,6 @@ In this example, we will call the `ls` command to listwith the optional param `-
 
 const { exec } = require('child_process');
 
-// exec
 exec('ls -l', (err, stdout, stderr) => {
   console.log(stdout);
 });
