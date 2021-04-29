@@ -5,6 +5,7 @@ url: child-processes
 author: ian
 ---
 
+<<<<<<< HEAD
 _Prerequisites: [events](../events), [streams](../buffers-and-streams)_
 
 The typical operating system has different processes running in the background, and each process is being managed by a single-core of our CPU and will run a series of calculations each time it is being ticked. To take full advantage of our CPU using a single process, we would need a number of processes that is at least equal to the number of cores in our CPU. In addition, each process might be responsible for running a series of calculations of different logic, which will give the end user a better control over the CPU’s behavior.
