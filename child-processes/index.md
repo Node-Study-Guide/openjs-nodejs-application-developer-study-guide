@@ -77,7 +77,7 @@ ls.on('close', (code) => {
 ```
 </div>
 
-In this example we are listening to the `stout` and `stderr` streams for `data` events, as well as listening for a `close` event.
+In this example we are listening to the `stout` and `stderr` streams for `data` events, as well as listening for a `close` event. In contrast, the `exec` method uses a callback which buffers the streams to strings and an error object.
 
 # spawn using pipes
 
