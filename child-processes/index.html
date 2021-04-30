@@ -102,7 +102,7 @@
   <span class="author">Author: <a href="/about/#ian">Ian Read</a>
   </span>
   <br/>
-  <time datetime="2021-04-30T20:15:12.729Z">April 30, 2021</time>
+  <time datetime="2021-04-30T20:21:52.792Z">April 30, 2021</time>
 </p>
 
 <p><em>Prerequisites: <a href="../events">events</a>, <a href="../buffers-and-streams">streams</a></em></p>
@@ -172,7 +172,7 @@ ls.on('close', (code) =&gt; {
 
 </code></pre>
 </div>
-<p>In this example we are listening to the <code>stout</code> and <code>stderr</code> streams for <code>data</code> events, as well as listening for a <code>close</code> event.</p>
+<p>In this example we are listening to the <code>stout</code> and <code>stderr</code> streams for <code>data</code> events, as well as listening for a <code>close</code> event. In contrast, the <code>exec</code> method uses a callback which buffers the streams to strings and an error object.</p>
 <h1>spawn using pipes</h1>
 <p>We are going to run two child processes, and pipe the output from one as the input to another. We want to use <code>wc</code> (word count) to count the number of words in the output from the <code>ls</code> command we have been using so far. This is the same as running <code>ls -l | wc</code> on the Linux/Mac command line.</p>
 <div class="repl-code">
