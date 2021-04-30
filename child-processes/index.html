@@ -102,11 +102,10 @@
   <span class="author">Author: <a href="/about/#ian">Ian Read</a>
   </span>
   <br/>
-  <time datetime="2021-04-29T08:13:44.315Z">April 29, 2021</time>
+  <time datetime="2021-04-30T20:05:54.502Z">April 30, 2021</time>
 </p>
 
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-<em>Prerequisites: <a href="../events">events</a>, <a href="../buffers-and-streams">streams</a></em></p>
+<p><em>Prerequisites: <a href="../events">events</a>, <a href="../buffers-and-streams">streams</a></em></p>
 <p>The typical operating system has different processes running in the background, and each process is being managed by a single-core of our CPU and will run a series of calculations each time it is being ticked. To take full advantage of our CPU using a single process, we would need a number of processes that is at least equal to the number of cores in our CPU. In addition, each process might be responsible for running a series of calculations of different logic, which will give the end user a better control over the CPU’s behavior.</p>
 <p>The <code>child_process</code> module provides the ability to spawn child processes and interact with other programs. Whilst single-threaded, non-blocking performance in Node.js is great for a single process, we can use <code>child_process</code> to handle the increasing workload in our applications in multiple threads.</p>
 <p>Using multiple processes allows a Node application to scale. Node is designed for building distributed applications with many nodes, hence it's name Node.</p>
@@ -154,7 +153,9 @@ exec('ls -l', (err, stdout, stderr) =&gt; {
 <p>The <code>spawn</code> method works by returning a new process. The process object that is returned has properties for each standard IO represented as a <code>Stream</code>: <code>.stdin</code> (<code>WriteStream</code>), <code>.stout</code> (<code>ReadStream</code>) and <code>.stderr</code> (<code>ReadStream</code>).</p>
 <p>We will now implement the previous example using the <code>spawn</code> method:</p>
 <div class="repl-code">
-<pre><code class="language-javascript">const { spawn } = require('child_process');
+<pre><code class="language-javascript">
+const { spawn } = require('child_process');
+
 const ls = spawn('ls', ['-l']);
 
 ls.stdout.on('data', (data) =&gt; {
@@ -175,12 +176,14 @@ ls.on('close', (code) =&gt; {
 <h1>spawn using pipes</h1>
 <p>We are going to run two child processes, and pipe the output from one as the input to another. We want to use <code>wc</code> (word count) to count the number of words in the output from the <code>ls</code> command we have been using so far. This is the same as running <code>ls -l | wc</code> on the Linux/Mac command line.</p>
 <div class="repl-code">
-<pre><code class="language-javascript">const { spawn } = require('child_process');
+<pre><code class="language-javascript">
+const { spawn } = require('child_process');
+
 const ls = spawn('ls', ['-l']);
-const wc = spawn('wc')
+const wc = spawn('wc');
 
 // pipe output from ls as input to wc
-ls.stdout.pipe(wc.stdin)
+ls.stdout.pipe(wc.stdin);
 
 wc.stdout.on('data', (data) =&gt; {
   console.log(`wc stdout: ${data}`);
@@ -201,22 +204,23 @@ wc.on('close', (code) =&gt; {
 <p>Unfortunately, we are unable to run this example in the REPL because it requires separate files. So this example is best run locally on your favourite terminal.</p>
 <p>In this example, we are going to create a child process that can receive a number, and then calculates the fibonacci of that number. This has been implemented inefficiently to illustrate long running processes. The <code>message</code> event is used to listen for requests, and the payload is destructed for a numerical value, <code>n</code>.</p>
 <pre><code class="language-javascript">
-const fibonacci = (num) =&gt; num &lt;= 1 ? 1 : fibonacci(num - 1) + fibonacci(num - 2)
+const fibonacci = (num) =&gt; num &lt;= 1 ? 1 : fibonacci(num - 1) + fibonacci(num - 2);
 
 process.on('message', ({ n }) =&gt; {
-  process.send({ fib: fibonacci(n), n })
+  process.send({ fib: fibonacci(n), n });
   // optional - there is no reason why this child process
   // can't be called multiple times.
-  process.exit()
+  process.exit();
 })
  
 </code></pre>
 <p>The parent process creates 3 child processes, and passes a range of numbers to them for calculating.</p>
-<pre><code class="language-javascript">const { fork } = require('child_process')
+<pre><code class="language-javascript">
+const { fork } = require('child_process');
 
-const child1 = fork('fork-child')
-const child2 = fork('fork-child')
-const child3 = fork('fork-child')
+const child1 = fork('fork-child');
+const child2 = fork('fork-child');
+const child3 = fork('fork-child');
 
 // send data to the child process to perform the calculation
 child1.send({ n: 5 });
