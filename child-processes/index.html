@@ -102,7 +102,7 @@
   <span class="author">Author: <a href="/about/#ian">Ian Read</a>
   </span>
   <br/>
-  <time datetime="2021-04-30T20:21:52.792Z">April 30, 2021</time>
+  <time datetime="2021-04-30T20:27:27.797Z">April 30, 2021</time>
 </p>
 
 <p><em>Prerequisites: <a href="../events">events</a>, <a href="../buffers-and-streams">streams</a></em></p>
@@ -200,7 +200,7 @@ wc.on('close', (code) =&gt; {
 </code></pre>
 </div>
 <h1>fork</h1>
-<p><code>fork</code> is a special version of `spawn' that allows messages to be sent between the Node processes.</p>
+<p><code>fork</code> is a special version of <code>spawn</code> that allows messages to be sent between the Node processes.</p>
 <p>Unfortunately, we are unable to run this example in the REPL because it requires separate files. So this example is best run locally on your favourite terminal.</p>
 <p>In this example, we are going to create a child process that can receive a number, and then calculates the fibonacci of that number. This has been implemented inefficiently to illustrate long running processes. The <code>message</code> event is used to listen for requests, and the payload is destructed for a numerical value, <code>n</code>.</p>
 <pre><code class="language-javascript">
@@ -283,9 +283,10 @@ child3.on('exit', () =&gt; {
 <p>These processes all accept an optional options object that allow us to control the context that the processes are run within. These vary for each method, and are described in detail in the <a href="https://nodejs.org/api/child_process.html">node documentation for <code>child_process</code></a>.</p>
 <h2>Summary</h2>
 <p>Parents <code>spawm</code>, <code>fork</code> or <code>exec</code> child processes, and communicate via events or pipes.</p>
-<p>Take me to <a href="/cheatsheet/#child-process">cheat sheet</a></p>
+<p>Take me to <a href="/cheatsheet/#child-process">cheat sheet</a>.</p>
 <h2>Exercise</h2>
 <p>Create a child process for doing some manipulation of a file or URL, and build a parent process that controls a number of these processes in parallel.</p>
+<p><em>No ideal solution as yet, but we would love to see a PR with one.</em></p>
 
 
 <h3>Ready to mark Child Processes as completed?</h3>
