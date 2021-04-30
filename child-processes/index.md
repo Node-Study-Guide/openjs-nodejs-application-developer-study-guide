@@ -31,7 +31,7 @@ Typically, `spawn` is more suitable for long-running process with large outputs.
 
 ## A Simple `exec`
 
-In this example, we will call the `ls` command to listwith the optional param `-l` to show a long list of details.
+The `exec` method allows us to spawns a shell to execute another process, such as an executable script or another Node script. In this example, we will call the `ls` command to list files in the current directoy, with the optional param `-l` to show a long list of details.
 
 <div class="repl-code">
 
