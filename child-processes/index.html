@@ -102,7 +102,7 @@
   <span class="author">Author: <a href="/about/#ian">Ian Read</a>
   </span>
   <br/>
-  <time datetime="2021-04-30T20:05:54.502Z">April 30, 2021</time>
+  <time datetime="2021-04-30T20:15:12.729Z">April 30, 2021</time>
 </p>
 
 <p><em>Prerequisites: <a href="../events">events</a>, <a href="../buffers-and-streams">streams</a></em></p>
@@ -137,7 +137,7 @@
 </table>
 <p>Typically, <code>spawn</code> is more suitable for long-running process with large outputs. spawn streams input/output with child process. <code>exec</code> buffered output in a small (by default 200K) buffer.</p>
 <h2>A Simple <code>exec</code></h2>
-<p>In this example, we will call the <code>ls</code> command to listwith the optional param <code>-l</code> to show a long list of details.</p>
+<p>The <code>exec</code> method allows us to spawns a shell to execute another process, such as an executable script or another Node script. In this example, we will call the <code>ls</code> command to list files in the current directoy, with the optional param <code>-l</code> to show a long list of details.</p>
 <div class="repl-code">
 <pre><code class="language-javascript">
 const { exec } = require('child_process');
