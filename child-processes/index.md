@@ -112,7 +112,7 @@ wc.on('close', (code) => {
 
 # fork
 
-`fork` is a special version of `spawn' that allows messages to be sent between the Node processes.
+`fork` is a special version of `spawn` that allows messages to be sent between the Node processes.
 
 Unfortunately, we are unable to run this example in the REPL because it requires separate files. So this example is best run locally on your favourite terminal.
 
