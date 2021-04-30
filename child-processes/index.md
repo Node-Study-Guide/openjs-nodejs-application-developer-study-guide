@@ -187,8 +187,10 @@ These processes all accept an optional options object that allow us to control t
 
 Parents `spawm`, `fork` or `exec` child processes, and communicate via events or pipes.
 
-Take me to [cheat sheet]({{ "/cheatsheet/#child-process" | url }})
+Take me to [cheat sheet]({{ "/cheatsheet/#child-process" | url }}).
 
 ## Exercise
 
 Create a child process for doing some manipulation of a file or URL, and build a parent process that controls a number of these processes in parallel.
+
+_No ideal solution as yet, but we would love to see a PR with one._
