@@ -5,7 +5,6 @@ url: child-processes
 author: ian
 ---
 
-<<<<<<< HEAD
 _Prerequisites: [events](../events), [streams](../buffers-and-streams)_
 
 The typical operating system has different processes running in the background, and each process is being managed by a single-core of our CPU and will run a series of calculations each time it is being ticked. To take full advantage of our CPU using a single process, we would need a number of processes that is at least equal to the number of cores in our CPU. In addition, each process might be responsible for running a series of calculations of different logic, which will give the end user a better control over the CPU’s behavior.
@@ -32,7 +31,8 @@ Typically, `spawn` is more suitable for long-running process with large outputs.
 
 ## A Simple `exec`
 
-In this example, we will call the `ls` command to listwith the optional param `-l` to show a long list of details. 
+In this example, we will call the `ls` command to listwith the optional param `-l` to show a long list of details.
+
 <div class="repl-code">
 
 ```javascript
@@ -57,7 +57,9 @@ We will now implement the previous example using the `spawn` method:
 <div class="repl-code">
 
 ```javascript
+
 const { spawn } = require('child_process');
+
 const ls = spawn('ls', ['-l']);
 
 ls.stdout.on('data', (data) => {
@@ -84,12 +86,14 @@ We are going to run two child processes, and pipe the output from one as the inp
 <div class="repl-code">
 
 ```javascript
+
 const { spawn } = require('child_process');
+
 const ls = spawn('ls', ['-l']);
-const wc = spawn('wc')
+const wc = spawn('wc');
 
 // pipe output from ls as input to wc
-ls.stdout.pipe(wc.stdin)
+ls.stdout.pipe(wc.stdin);
 
 wc.stdout.on('data', (data) => {
   console.log(`wc stdout: ${data}`);
@@ -116,13 +120,13 @@ In this example, we are going to create a child process that can receive a numbe
 
 ```javascript
 
-const fibonacci = (num) => num <= 1 ? 1 : fibonacci(num - 1) + fibonacci(num - 2)
+const fibonacci = (num) => num <= 1 ? 1 : fibonacci(num - 1) + fibonacci(num - 2);
 
 process.on('message', ({ n }) => {
-  process.send({ fib: fibonacci(n), n })
+  process.send({ fib: fibonacci(n), n });
   // optional - there is no reason why this child process
   // can't be called multiple times.
-  process.exit()
+  process.exit();
 })
  
 ```
@@ -130,11 +134,12 @@ process.on('message', ({ n }) => {
 The parent process creates 3 child processes, and passes a range of numbers to them for calculating.
 
 ```javascript
-const { fork } = require('child_process')
 
-const child1 = fork('fork-child')
-const child2 = fork('fork-child')
-const child3 = fork('fork-child')
+const { fork } = require('child_process');
+
+const child1 = fork('fork-child');
+const child2 = fork('fork-child');
+const child3 = fork('fork-child');
 
 // send data to the child process to perform the calculation
 child1.send({ n: 5 });

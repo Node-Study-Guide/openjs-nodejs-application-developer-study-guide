@@ -1,9 +1,10 @@
 const { spawn } = require('child_process');
+
 const ls = spawn('ls', ['-l']);
-const wc = spawn('wc')
+const wc = spawn('wc');
 
 // pipe output from ls as input to wc
-ls.stdout.pipe(wc.stdin)
+ls.stdout.pipe(wc.stdin);
 
 wc.stdout.on('data', (data) => {
   console.log(`wc stdout: ${data}`);

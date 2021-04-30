@@ -1,8 +1,8 @@
-const { fork } = require('child_process')
+const { fork } = require('child_process');
 
-const child1 = fork('fork-child')
-const child2 = fork('fork-child')
-const child3 = fork('fork-child')
+const child1 = fork('fork-child');
+const child2 = fork('fork-child');
+const child3 = fork('fork-child');
 
 // send data to the child process to perform the calculation
 child1.send({ n: 5 });
