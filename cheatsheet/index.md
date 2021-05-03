@@ -63,3 +63,19 @@ emitter.listeners(event)
 emitter.emit(event, [arg1], [arg2], [...])
 Event: 'newListener'
 ```
+
+## [Child Processes](#child-process)
+
+Class: child_process
+
+```
+const child_process = require('child_process')
+
+child_process.exec(command[, options][, callback])
+child_process.execFile(file[, args][, options][, callback])
+child_process.fork(modulePath[, args][, options])
+child_process.spawn(command[, args][, options])
+
+subprocess.send(message[, sendHandle[, options]][, callback])
+
+```
