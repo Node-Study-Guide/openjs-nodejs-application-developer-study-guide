@@ -12,7 +12,7 @@ Node's `stream` module is an API for working with streaming data. Streams enable
 
 An example of streaming data is watching an online video broadcast. As the data is received the video can be displayed.
 
-Streams are instances of [`EventEmitter`](#events).
+Streams are instances of [`EventEmitter`](/events).
 
 ## Working with streams
 

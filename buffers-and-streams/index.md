@@ -6,6 +6,8 @@ author: john
 date: 2019-11-14
 ---
 
+_Prerequisites: [events](../events)_
+
 The Node Application Developer Certification exam section for Buffers and Streams is worth 11% of the total and is broken into the following sections:
 
 - Node.js Buffer API’s
