@@ -16,7 +16,12 @@ The Node `Buffer` class is a global class and therefore does not need to be impo
 
 ### Example
 
+In this first example, it creates a buffer from a string and shows some of the basic manipulation this provides.
+
+<div class="repl-code">
+
 ```javascript
+
 // create a buffer from a string
 const myBuffer = Buffer.from("hello node buffers");
 
@@ -30,9 +35,11 @@ console.log(myBuffer.toString());
 // hello node buffers
 ```
 
+</div>
+
 ## Instantiating a Buffer
 
-Buffers can be instantiated with:
+The `Buffer.from()` methods allows instantiated `Buffers` with:
 
 - a string
 - an array
@@ -40,17 +47,15 @@ Buffers can be instantiated with:
 - an arrayBuffer
 - an object
 
-using `Buffer.from()`.
+Buffers can also be instantiated by size using `Buffer.alloc()`, `Buffer.allocUnsafe()` and `Buffer.allocUnsafeSlow()`. `alloc` allocates a new buffer of a given `size`, and fills it with zeros (or whatever is specified in the `fill` parameter. The `allocUnsafe` method allocates a given space in memory but does not initialise the values. The contents of the newly created block of memory are unknown, and they potentially _may contain sensitive data_.
 
-Buffers can also be instantiated by size using `Buffer.alloc()`, `Buffer.allocUnsafe()` and `Buffer.allocUnsafeSlow()`
-
-// The next line should be an 'aside', how to do this in markdown and the rendered site?
-
-> _Unsafe_ as the memory containing the buffer is not initialised - i.e. not zeroed-out, so the potential exists for sensitive data to be leaked.
 
 ### Example
 
-```
+<div class="repl-code">
+
+```javascript
+
 const myBuffer1 = Buffer.from([1, 2, 3]);
 console.log(myBuffer1.length);
 // 3
@@ -63,25 +68,36 @@ console.log(myBuffer2);
 const myBuffer3 = Buffer.alloc(3, 'a');
 console.log(myBuffer3);
 // <Buffer 61 61 61>
+
 ```
+
+</div>
 
 ### Caveat: Buffer size
 
 Once instantiated, using either `from()` or one of the `alloc()` methods a Buffer cannot be resized.
 
-A Buffer's size is measured in Octets which is a more accurate way of saying 'an 8-bit byte'.
+A `Buffer's` size is measured in bytes (common 8-bit bytes, or "Octets")'.
 
-```
+<div class="repl-code">
+
+```javascript
+
 const myBuffer4 = Buffer.alloc(4);
 console.log(myBuffer4);
 // <Buffer 00 00 00 00>
+
 myBuffer4.write('card');
 console.log(myBuffer4);
 // <Buffer 63 61 72 64>
+
 myBuffer4.write('cards');
 console.log(myBuffer4);
 // <Buffer 63 61 72 64> - last character is lost
+
 ```
+
+</div>
 
 ## Terminology
 
