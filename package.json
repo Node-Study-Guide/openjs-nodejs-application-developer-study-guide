@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/jjmax75/openjs-nodejs-application-developer-study-guide#readme",
   "dependencies": {
-    "@11ty/eleventy": "^0.3.3",
+    "@11ty/eleventy": "^0.12.1",
     "eleventy": "^1.0.6"
   },
   "devDependencies": {
