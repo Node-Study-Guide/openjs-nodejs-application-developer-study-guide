@@ -82,6 +82,40 @@ async function callFoo() {
 
 ```
 
+## [Buffers](#buffers)
+
+Class: Buffer
+
+```
+Buffer.from(array)
+Buffer.from(arrayBuffer[, byteOffset[, length]])
+Buffer.from(buffer)
+Buffer.from(object[, offsetOrEncoding[, length]])
+Buffer.from(string[, encoding])
+Buffer.alloc(size[, fill[, encoding]])
+Buffer.allocUnsafe(size)
+Buffer.allocUnsafeSlow(size)
+```
+
+Instance: buf
+
+```
+buf.slice([start[, end]])
+buf.compare(target[, targetStart[, targetEnd[, sourceStart[, sourceEnd]]]])
+buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])
+buf.entries()
+buf.equals(otherBuffer)
+buf.fill(value[, offset[, end]][, encoding])
+buf.includes(value[, byteOffset][, encoding])
+buf.indexOf(value[, byteOffset][, encoding])
+buf.keys()
+buf.lastIndexOf(value[, byteOffset][, encoding])
+buf.length
+buf.toString([encoding[, start[, end]]])
+buf.values()
+buf.write(string[, offset[, length]][, encoding])
+```
+
 ## [Events](#events)
 
 Class: events.EventEmitter
