@@ -8,7 +8,7 @@ date: 2019-11-14
 
 ## Buffers
 
-Node's `Buffer` class enables working with binary data in Javascript. A buffer allows a programme to store data temporarily outside the V8 engine's stack.
+Node's `Buffer` class enables working with binary data in JavaScript. A buffer allows a program to store data temporarily outside the V8 engine's stack.
 
 Though not entirely accurate we can think of a buffer as an array of bytes, each byte is represented by a hexadecimal digit.
 
