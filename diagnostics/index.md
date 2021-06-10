@@ -1,8 +1,8 @@
 ---
-layout: default
+layout: post
 title: Diagnostics
 author: donovan
-date: 1903-10-09
+date: 2021-06-10
 ---
 
 In this lesson we will take a look at ways we can diagnose issues in our code. To do this we'll use the built-in Node.js debugger, as well as the Chrome dev tools.
